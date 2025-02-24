@@ -27,7 +27,7 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    return view('layouts.dashboard', ['title' => 'Dashboard']);
+    return view('layouts.app', ['title' => 'Dashboard']);
 })->name('index');
 
 
