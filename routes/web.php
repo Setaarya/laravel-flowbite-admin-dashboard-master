@@ -26,9 +26,10 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.app', ['title' => 'Dashboard']);
-})->name('index');
+Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 /////////////////////////////////////////////
@@ -78,7 +79,6 @@ Route::get('/manager/home', function () {
 })->name('manager_home')->middleware(['auth', 'role:Manager']);
 
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin'])->group(function () {

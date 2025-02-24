@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 use Illuminate\View\View;
+use App\Services\DashboardService;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    protected $dashboardService;
+
+    public function __construct(DashboardService $dashboardService)
     {
-        return view('layouts.app');
+        $this->dashboardService = $dashboardService;
     }
+
+    public function index()
+    {
+        $summary = $this->dashboardService->getDashboardData();
+        return view('dashboard.index', compact('summary'));
+    }
+
 }
