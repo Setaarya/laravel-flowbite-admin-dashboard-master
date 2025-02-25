@@ -62,12 +62,37 @@
         button:hover {
             background-color: #c53030;
         }
+
+        .image-preview img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <h1>Products List</h1>
+
+    <!-- Pesan Sukses -->
+    @if (session('success'))
+        <div class="success-message">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <a href="{{ route('home') }}">Home</a>
     <a href="{{ route('products.create') }}">Create New Product</a>
+
     <table border="1">
         <tr>
             <th>ID</th>
@@ -89,15 +114,23 @@
             <td>{{ $product->supplier->name }}</td>
             <td>{{ $product->name }}</td>
             <td>{{ $product->sku }}</td>
-            <td>{{ $product->description }}</td>
-            <td>{{ $product->purchase_price }}</td>
-            <td>{{ $product->selling_price }}</td>
-            <td>{{ $product->image }}</td>
+            <td>{{ Str::limit($product->description, 50) }}</td> <!-- Batasi panjang deskripsi -->
+            <td>Rp {{ number_format($product->purchase_price, 2, ',', '.') }}</td> <!-- Format harga -->
+            <td>Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
+
+            <td class="image-preview">
+                @if ($product->image)
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image">
+                @else
+                    No Image
+                @endif
+            </td>
+
             <td>{{ $product->minimum_stock }}</td>
             <td>
                 <a href="{{ route('products.show', $product->id) }}">Show</a>
                 <a href="{{ route('products.edit', $product->id) }}">Edit</a>
-                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
+                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this product?');">
                     @csrf
                     @method('DELETE')
                     <button type="submit">Delete</button>

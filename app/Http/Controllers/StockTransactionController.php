@@ -23,7 +23,7 @@ class StockTransactionController extends Controller
 
     public function index()
     {
-        $transactions = $this->stockTransactionService->getAllTransactions()->latest()->get();
+        $transactions = $this->stockTransactionService->getAllTransactions()->last()->get();
         return view('stock_transactions.index', compact('transactions'));
     }
 
@@ -91,9 +91,12 @@ class StockTransactionController extends Controller
             'status' => 'required|in:received,dispatched',
         ]);
 
-        $this->stockTransactionService->confirmTransaction($id, $request->status);
-
-        return redirect()->route('stock_transactions.pending')->with('success', 'Status transaksi diperbarui.');
+        try {
+            $this->stockTransactionService->confirmTransaction($id, $request->status);
+            return response()->json(['message' => 'Transaksi berhasil dikonfirmasi.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
 
     /**

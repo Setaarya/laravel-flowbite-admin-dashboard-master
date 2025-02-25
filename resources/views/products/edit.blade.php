@@ -52,14 +52,43 @@
         button:hover {
             background-color: #0056b3;
         }
+        .error {
+            background-color: #fde8e8;
+            color: #e53e3e;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        .image-preview {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Edit Product</h1>
-        <form action="{{ route('products.update', $product->id) }}" method="POST">
+
+        <!-- Tampilkan Error Jika Ada -->
+        @if ($errors->any())
+            <div class="error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
             <label>Category:</label>
             <select name="category_id" required>
                 @foreach ($categories as $category)
@@ -68,6 +97,7 @@
                     </option>
                 @endforeach
             </select>
+
             <label>Supplier:</label>
             <select name="supplier_id" required>
                 @foreach ($suppliers as $supplier)
@@ -76,20 +106,35 @@
                     </option>
                 @endforeach
             </select>
+
             <label>Name:</label>
             <input type="text" name="name" value="{{ $product->name }}" required>
+
             <label>SKU:</label>
             <input type="text" name="sku" value="{{ $product->sku }}" required>
+
             <label>Description:</label>
             <textarea name="description" required>{{ $product->description }}</textarea>
+
             <label>Purchase Price:</label>
-            <input type="number" name="purchase_price" value="{{ $product->purchase_price }}" required>
+            <input type="number" name="purchase_price" value="{{ $product->purchase_price }}" step="0.01" required>
+
             <label>Selling Price:</label>
-            <input type="number" name="selling_price" value="{{ $product->selling_price }}" required>
-            <label>Image:</label>
-            <input type="text" name="image" value="{{ $product->image }}" required>
+            <input type="number" name="selling_price" value="{{ $product->selling_price }}" step="0.01" required>
+
+            <!-- Preview Image -->
+            @if ($product->image)
+                <div class="image-preview">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image">
+                </div>
+            @endif
+
+            <label>Change Image:</label>
+            <input type="file" name="image" accept="image/*">
+
             <label>Minimum Stock:</label>
             <input type="number" name="minimum_stock" value="{{ $product->minimum_stock }}" required>
+
             <button type="submit">Update</button>
         </form>
     </div>

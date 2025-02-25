@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\StockTransactionRepositoryInterface;
 use App\Models\StockTransaction;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class StockTransactionService implements StockTransactionServiceInterface
@@ -48,6 +49,19 @@ class StockTransactionService implements StockTransactionServiceInterface
     public function confirmTransaction($id, $status)
     {
         $transaction = StockTransaction::findOrFail($id);
+        $product = Product::findOrFail($transaction->product_id);
+
+        // Hanya proses perubahan stok jika status menjadi 'received' atau 'dispatched'
+        if ($status === 'received' && $transaction->type === 'masuk') {
+            $product->increment('current_stock', $transaction->quantity);
+        } elseif ($status === 'dispatched' && $transaction->type === 'keluar') {
+            if ($product->current_stock < $transaction->quantity) {
+                throw new \Exception("Stok tidak cukup untuk transaksi ini.");
+            }
+            $product->decrement('current_stock', $transaction->quantity);
+        }
+
+        // Update status transaksi
         $transaction->update(['status' => $status]);
     }
 

@@ -37,5 +37,14 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password123'),
             'role' => 'Staff Gudang',
         ]);
+
+        $this->call([
+            CategorySeeder::class,
+            SupplierSeeder::class,
+            ProductSeeder::class,
+            ProductAttributeSeeder::class,
+            StockTransactionSeeder::class
+            // Tambahkan semua seeder lain di sini
+        ]);
     }
 }

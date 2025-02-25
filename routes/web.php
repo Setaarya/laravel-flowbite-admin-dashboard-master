@@ -27,8 +27,6 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
-
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
@@ -65,8 +63,7 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
 
-
-
+////////////////////////////////////////////////////////////////////////
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
         Route::get('/admin/home', [AdminController::class, 'index'])->name('admin_home');
@@ -80,5 +77,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/staff/home', [StaffController::class, 'index'])->name('staff_home');
     });
 });
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::middleware('role:manager')->group(function () {
+        Route::get('/stock-transactions/create', [StockTransactionController::class, 'create'])->name('stock-transactions.create');
+        Route::post('/stock-transactions', [StockTransactionController::class, 'store'])->name('stock-transactions.store');
+    });
+
+    Route::middleware('role:staff')->group(function () {
+        Route::get('/stock-transactions/pending', [StockTransactionController::class, 'pending'])->name('stock-transactions.pending');
+        Route::patch('/stock-transactions/{id}/confirm', [StockTransactionController::class, 'confirm'])->name('stock-transactions.confirm');
+    });
+
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/stock-transactions', [StockTransactionController::class, 'index'])->name('stock-transactions.index');
+        Route::delete('/stock-transactions/{id}', [StockTransactionController::class, 'destroy'])->name('stock-transactions.destroy');
+    });
+});
+
 
 ?>

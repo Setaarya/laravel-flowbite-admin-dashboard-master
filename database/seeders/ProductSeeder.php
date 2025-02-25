@@ -34,7 +34,8 @@ class ProductSeeder extends Seeder
                 'description'    => $faker->sentence,
                 'purchase_price' => $faker->randomFloat(2, 1000, 10000),
                 'selling_price'  => $faker->randomFloat(2, 1500, 12000),
-                'image'          => $faker->imageUrl(200, 200, 'products', true),
+                'image'          => $faker->imageUrl(200, 200, 'products', true, 'Faker'),
+                'current_stock'  => $faker->numberBetween(10, 100), // Memperbaiki kesalahan sebelumnya
                 'minimum_stock'  => $faker->numberBetween(5, 50),
                 'created_at'     => now(),
                 'updated_at'     => now(),

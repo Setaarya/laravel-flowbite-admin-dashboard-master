@@ -17,11 +17,12 @@ return new class extends Migration
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
             $table->string('name');
             $table->string('sku')->unique()->comment('Stock Keeping Unit');
-            $table->text('description')->nullable()->comment('nullable');
+            $table->text('description')->nullable()->comment('Deskripsi produk');
             $table->decimal('purchase_price', 10, 2);
             $table->decimal('selling_price', 10, 2);
-            $table->string('image')->nullable()->comment('nullable, Path ke file gambar');
-            $table->integer('minimum_stock');
+            $table->string('image')->nullable()->comment('Path ke file gambar');
+            $table->integer('current_stock')->default(0)->comment('Jumlah stok saat ini');
+            $table->integer('minimum_stock')->default(1)->comment('Batas minimum stok');
             $table->timestamps();
         });
     }
@@ -34,4 +35,3 @@ return new class extends Migration
         Schema::dropIfExists('products');
     }
 };
-?>

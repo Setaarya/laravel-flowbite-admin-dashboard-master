@@ -15,49 +15,38 @@
             color: #2d3748;
         }
 
-        a {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: #3182ce;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-
-        a:hover {
-            background-color: #2b6cb0;
-        }
-
         form {
-            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
             margin: 0 auto;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
+        label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #2d3748;
         }
 
-        .form-group input,
-        .form-group select {
+        input, select {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
+            margin-bottom: 16px;
             border: 1px solid #cbd5e0;
             border-radius: 4px;
         }
 
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 10px;
             background-color: #3182ce;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 16px;
         }
 
         button:hover {
@@ -67,11 +56,27 @@
 </head>
 <body>
     <h1>Edit Product Attribute</h1>
-    <a href="{{ route('product_attributes.index') }}">Back to List</a>
+    
     <form action="{{ route('product_attributes.update', $productAttribute->id) }}" method="POST">
         @csrf
         @method('PUT')
-        @include('product_attributes.form')
+
+        <label>Product:</label>
+        <select name="product_id" required>
+            @foreach ($products as $product)
+                <option value="{{ $product->id }}" 
+                    {{ $product->id == $productAttribute->product_id ? 'selected' : '' }}>
+                    {{ $product->name }}
+                </option>
+            @endforeach
+        </select>
+
+        <label>Attribute Name:</label>
+        <input type="text" name="name" value="{{ $productAttribute->name }}" required>
+
+        <label>Value:</label>
+        <input type="text" name="value" value="{{ $productAttribute->value }}" required>
+
         <button type="submit">Update Attribute</button>
     </form>
 </body>
