@@ -30,4 +30,15 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
     {
         return $stockTransaction->delete();
     }
+
+    public function getPending()
+    {
+        return StockTransaction::where('status', 'pending')->get();
+    }
+
+    public function updateStatus($id, $status)
+    {
+        return StockTransaction::where('id', $id)->update(['status' => $status]);
+    }
+    
 }
