@@ -4,51 +4,65 @@ namespace App\Http\Controllers;
 
 use App\Models\StockTransaction;
 use App\Models\Product;
-use App\Models\User;
-use App\Services\StockTransactionServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StockTransactionController extends Controller
 {
-    protected $stockTransactionService;
-
-    public function __construct(StockTransactionServiceInterface $stockTransactionService)
-    {
-        $this->stockTransactionService = $stockTransactionService;
-    }
-
     /**
-     * Display a listing of the stock transactions.
+     * Display a listing of the resource.
      */
     public function index()
     {
-        $transactions = $this->stockTransactionService->getAllStockTransactions();
+        $transactions = StockTransaction::with(['product', 'user'])->latest()->get();
         return view('stock_transactions.index', compact('transactions'));
     }
 
     /**
-     * Show the form for creating a new stock transaction.
+     * Show the form for creating a new resource.
      */
     public function create()
     {
+        if (Auth::user()->role !== 'manager') {
+            return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+        }
+
         $products = Product::all();
-        $users = User::all();
-        return view('stock_transactions.create', compact('products', 'users'));
+        return view('stock_transactions.create', compact('products'));
     }
 
     /**
-     * Store a newly created stock transaction in storage.
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validatedData = $this->stockTransactionService->validateStockTransactionData($request);
-        $this->stockTransactionService->createStockTransaction($validatedData);
+        if (Auth::user()->role !== 'manager') {
+            return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+        }
+
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'type' => 'required|in:masuk,keluar',
+            'quantity' => 'required|integer|min:1',
+            'date' => 'required|date',
+            'notes' => 'nullable|string',
+        ]);
+
+        StockTransaction::create([
+            'product_id' => $request->product_id,
+            'user_id' => Auth::id(),
+            'type' => $request->type,
+            'quantity' => $request->quantity,
+            'date' => $request->date,
+            'status' => 'pending',
+            'notes' => $request->notes,
+        ]);
 
         return redirect()->route('stock_transactions.index')->with('success', 'Stock transaction created successfully.');
     }
 
     /**
-     * Display the specified stock transaction.
+     * Display the specified resource.
      */
     public function show(StockTransaction $stockTransaction)
     {
@@ -56,33 +70,34 @@ class StockTransactionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified stock transaction.
+     * Show the form for editing the specified resource.
      */
     public function edit(StockTransaction $stockTransaction)
     {
-        $products = Product::all();
-        $users = User::all();
-        return view('stock_transactions.edit', compact('stockTransaction', 'products', 'users'));
+        if (Auth::user()->role !== 'staff') {
+            return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+        }
+
+        return view('stock_transactions.edit', compact('stockTransaction'));
     }
 
     /**
-     * Update the specified stock transaction in storage.
+     * Update the specified resource in storage.
      */
     public function update(Request $request, StockTransaction $stockTransaction)
     {
-        $validatedData = $this->stockTransactionService->validateStockTransactionData($request);
-        $this->stockTransactionService->updateStockTransaction($stockTransaction, $validatedData);
+        if (Auth::user()->role !== 'staff') {
+            return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+        }
+
+        $request->validate([
+            'status' => 'required|in:received,dispatched',
+        ]);
+
+        $stockTransaction->update([
+            'status' => $request->status,
+        ]);
 
         return redirect()->route('stock_transactions.index')->with('success', 'Stock transaction updated successfully.');
-    }
-
-    /**
-     * Remove the specified stock transaction from storage.
-     */
-    public function destroy(StockTransaction $stockTransaction)
-    {
-        $this->stockTransactionService->deleteStockTransaction($stockTransaction);
-
-        return redirect()->route('stock_transactions.index')->with('success', 'Stock transaction deleted successfully.');
     }
 }

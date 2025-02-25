@@ -4,47 +4,38 @@ namespace App\Services;
 
 use App\Repositories\StockTransactionRepositoryInterface;
 use App\Models\StockTransaction;
-use Illuminate\Http\Request;
 
 class StockTransactionService implements StockTransactionServiceInterface
 {
-    protected $stockTransactionRepository;
+    protected $repository;
 
-    public function __construct(StockTransactionRepositoryInterface $stockTransactionRepository)
+    public function __construct(StockTransactionRepositoryInterface $repository)
     {
-        $this->stockTransactionRepository = $stockTransactionRepository;
+        $this->repository = $repository;
     }
 
-    public function getAllStockTransactions()
+    public function getAllTransactions()
     {
-        return $this->stockTransactionRepository->getAll();
+        return $this->repository->getAll();
     }
 
-    public function createStockTransaction(array $data)
+    public function getTransactionById($id)
     {
-        return $this->stockTransactionRepository->create($data);
+        return $this->repository->getById($id);
     }
 
-    public function updateStockTransaction(StockTransaction $stockTransaction, array $data)
+    public function createTransaction(array $data)
     {
-        return $this->stockTransactionRepository->update($stockTransaction, $data);
+        return $this->repository->create($data);
     }
 
-    public function deleteStockTransaction(StockTransaction $stockTransaction)
+    public function updateTransaction(StockTransaction $stockTransaction, array $data)
     {
-        return $this->stockTransactionRepository->delete($stockTransaction);
+        return $this->repository->update($stockTransaction, $data);
     }
 
-    public function validateStockTransactionData(Request $request)
+    public function deleteTransaction(StockTransaction $stockTransaction)
     {
-        return $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'user_id' => 'required|exists:users,id',
-            'type' => 'required|string',
-            'quantity' => 'required|integer',
-            'date' => 'required|date',
-            'status' => 'required|string',
-            'notes' => 'nullable|string',
-        ]);
+        return $this->repository->delete($stockTransaction);
     }
 }

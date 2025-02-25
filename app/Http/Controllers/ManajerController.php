@@ -16,6 +16,6 @@ class ManajerController extends Controller
     public function index()
     {
         $data = $this->stockService->getDashboardData();
-        return view('manager_home', compact('data'));
+        return view('manager.home', compact('data'));
     }
 }

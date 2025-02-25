@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -22,25 +23,37 @@ class RegisterController extends Controller
     |
     */
 
-    public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8|confirmed',
-        'role' => 'required|in:admin,manajer,staff'
-    ]);
+        public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:Admin,Manajer Gudang,Staff Gudang'
+        ]);
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'role' => $request->role
-    ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role
+        ]);
 
-    auth()->login($user);
+        Auth::login($user);
+        
+        return $this->redirectUser($user);
 
-    return redirect($this->redirectTo());
-}
+    }
+
+    protected function redirectUser($user)
+    {
+        if ($user->role == 'Admin') {
+            return redirect()->route('admin_home');
+        } elseif ($user->role == 'Manajer Gudang') {
+            return redirect()->route('manager_home');
+        } else {
+            return redirect()->route('staff_home');
+        }
+    }
 
 }

@@ -65,32 +65,19 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
 
-// Role-based home routes
-Route::get('/admin/home', function () {
-    return view('admin_home');
-})->name('admin_home')->middleware(['auth', 'role:Admin']);
-
-Route::get('/staff/home', function () {
-    return view('staff_home');
-})->name('staff_home')->middleware(['auth', 'role:Staff']);
-
-Route::get('/manager/home', function () {
-    return view('manager_home');
-})->name('manager_home')->middleware(['auth', 'role:Manager']);
-
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::middleware(['role:admin'])->group(function () {
-        Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::middleware(['role:Admin'])->group(function () {
+        Route::get('/admin/home', [AdminController::class, 'index'])->name('admin_home');
     });
 
-    Route::middleware(['role:manajer'])->group(function () {
-        Route::get('/manajer/dashboard', [ManajerController::class, 'index'])->name('manajer.dashboard');
+    Route::middleware(['role:Manajer Gudang'])->group(function () {
+        Route::get('/manajer/home', [ManajerController::class, 'index'])->name('manager_home');
     });
 
-    Route::middleware(['role:staff'])->group(function () {
-        Route::get('/staff/dashboard', [StaffController::class, 'index'])->name('staff.dashboard');
+    Route::middleware(['role:Staff Gudang'])->group(function () {
+        Route::get('/staff/home', [StaffController::class, 'index'])->name('staff_home');
     });
 });
 

@@ -52,8 +52,8 @@
                 <select id="role" name="role" required
                         class="w-full px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
                     <option value="Admin">Admin</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Manager">Manager</option>
+                    <option value="Staff Gudang">Staff Gudang</option>
+                    <option value="Manajer Gudang">Manager Gudang</option>
                 </select>
             </div>
 

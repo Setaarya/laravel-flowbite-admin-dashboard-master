@@ -17,6 +17,6 @@ class StaffController extends Controller
     public function index(Request $request)
     {
         $tasks = $this->dashboardService->getTasks();
-        return view('staff_home', compact('tasks'));
+        return view('staff.home', compact('tasks'));
     }
 }

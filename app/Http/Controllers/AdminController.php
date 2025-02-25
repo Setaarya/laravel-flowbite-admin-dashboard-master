@@ -21,6 +21,6 @@ class AdminController extends Controller
         $endDate = now()->toDateString();
 
         $data = $this->dashboardService->getDashboardData($startDate, $endDate);
-        return view('admin_home', compact('data'));
+        return view('admin.home', compact('data'));
     }
 }

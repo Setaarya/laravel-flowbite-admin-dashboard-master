@@ -30,9 +30,9 @@ class AuthController extends Controller
 
             if ($user->role == 'Admin') {
                 return redirect()->route('admin_home');
-            } elseif ($user->role == 'Staff') {
+            } elseif ($user->role == 'Staff Gudang') {
                 return redirect()->route('staff_home');
-            } elseif ($user->role == 'Manager') {
+            } elseif ($user->role == 'Manajer Gudang') {
                 return redirect()->route('manager_home');
             }
 
@@ -48,6 +48,19 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
+
+
+    protected function redirectUser($user)
+    {
+        if ($user->role == 'Admin') {
+            return redirect()->route('admin_home');
+        } elseif ($user->role == 'Manajer Gudang') {
+            return redirect()->route('manager_home');
+        } else {
+            return redirect()->route('staff_home');
+        }
+    }
+    
 
     public function register(Request $request)
     {
@@ -67,12 +80,14 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('indexDashboard');
+        return $this->redirectUser($user);
     }
 
     public function logout()
     {
         Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
         return redirect()->route('login');
     }
 
