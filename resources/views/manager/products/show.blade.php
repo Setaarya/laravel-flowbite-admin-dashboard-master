@@ -1,3 +1,8 @@
+@extends('manager.navbar')
+
+@section('title', 'Detail Produk')
+
+@section('content')
 <!DOCTYPE html>
 <html>
 <head>
@@ -164,3 +169,4 @@
     </div>
 </body>
 </html>
+@endsection

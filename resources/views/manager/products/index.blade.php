@@ -1,3 +1,8 @@
+@extends('manager.navbar')
+
+@section('title', 'Daftar Produk')
+
+@section('content')
 <!DOCTYPE html>
 <html>
 <head>
@@ -118,10 +123,11 @@
             <td>{{ $product->current_stock }}</td>
             <td>{{ $product->minimum_stock }}</td>
             <td>
-                <a href="{{ route('products.manager_show', $product->id) }}">Show</a>
+                <a href="{{ route('manager.products.show', $product->id) }}">Show</a>
             </td>
         </tr>
         @endforeach
     </table>
 </body>
 </html>
+@endsection

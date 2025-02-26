@@ -70,4 +70,20 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
+
+    public function managerIndex()
+    {
+        $products = $this->productService->getAllProducts();
+        return view('manager.products.index', compact('products'));
+    }
+
+    // Menampilkan detail produk untuk manajer
+    public function managerShow()
+    {
+        $product = $this->productService->getAllProducts();
+        if (!$product) {
+            return redirect()->route('manager.products.index')->with('error', 'Produk tidak ditemukan');
+        }
+        return view('manager.products.show', compact('product'));
+    }
 }

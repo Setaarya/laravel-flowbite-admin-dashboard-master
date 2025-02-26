@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CRUD\UserController;
 use App\Http\Controllers\CRUD\SupplierController;
@@ -76,17 +75,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {
         Route::get('/manager/home', [ManajerController::class, 'index'])->name('manager_home');
+        Route::get('/manager/products/index', [ProductController::class, 'managerIndex'])->name('manager.products.index');
+    Route::get('/manager/products/show', [ProductController::class, 'managerShow'])->name('manager.products.show');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {
         Route::get('/staff/home', [StaffController::class, 'index'])->name('staff_home');
-        Route::get('/stock_transactions/staff_index', [StockTransactionController::class, 'staffIndex'])
-        ->name('stock_transactions.staff_index');
         Route::get('/stock-transactions/pending', [StockTransactionController::class, 'pending'])->name('stock_transactions.pending');
         Route::patch('/stock-transactions/{id}/confirm', [StockTransactionController::class, 'confirm'])->name('stock_transactions.confirm');
+        Route::get('/stock_transactions/staff_index', [StockTransactionController::class, 'staffIndex'])->name('stock_transactions.staff_index');
     });
 });
 /////////////////////////////////////////////////////////////////////////////////
+
 
 
 
