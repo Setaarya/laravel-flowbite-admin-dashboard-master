@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\staff;
 
+use App\Http\Controllers\Controller;
 use App\Services\StaffDashboardServiceInterface;
 use Illuminate\Http\Request;
 

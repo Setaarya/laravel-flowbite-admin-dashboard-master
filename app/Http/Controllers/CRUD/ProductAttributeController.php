@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
+use App\Http\Controllers\Controller;
 use App\Services\ProductAttributeService;
 use App\Models\ProductAttribute;
 use App\Models\Product;

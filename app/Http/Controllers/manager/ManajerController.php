@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\manager;
 
-use App\Services\StockService;
+use App\Http\Controllers\Controller;
+use App\Services\ManagerDashboardService;
 
 class ManajerController extends Controller
 {
     protected $stockService;
 
-    public function __construct(StockService $stockService)
+    public function __construct(ManagerDashboardService $stockService)
     {
         $this->stockService = $stockService;
     }

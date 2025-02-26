@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
+use App\Http\Controllers\Controller;
 use App\Models\StockTransaction;
 use App\Models\Product;
 use App\Services\StockTransactionService;
@@ -110,6 +111,12 @@ class StockTransactionController extends Controller
 
         $transactions = $this->stockTransactionService->getAllTransactions();
         return view('stock_transactions.index', compact('transactions'));
+    }
+
+    public function staffindex()
+    {
+        $transactions = $this->stockTransactionService->getAllTransactions()->last()->get();
+        return view('stock_transactions.staff_index', compact('transactions'));
     }
 
     /**

@@ -1,18 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductAttributeController;
-use App\Http\Controllers\StockTransactionController;
+use App\Http\Controllers\CRUD\UserController;
+use App\Http\Controllers\CRUD\SupplierController;
+use App\Http\Controllers\CRUD\ProductController;
+use App\Http\Controllers\CRUD\CategoryController;
+use App\Http\Controllers\CRUD\ProductAttributeController;
+use App\Http\Controllers\CRUD\StockTransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ManajerController;
-use App\Http\Controllers\StaffController;
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\manager\ManajerController;
+use App\Http\Controllers\staff\StaffController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\UserSettingController;
 
 
 /*
@@ -25,8 +27,8 @@ use App\Http\Controllers\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', [DashboardController::class, 'index'])->name('index');
+Route::get('/', [LandingPageController::class, 'index'])->name('index');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
@@ -52,6 +54,9 @@ Route::resource('stock_transactions', StockTransactionController::class);
 /////////////////////////////////////////////////////////////
 
 
+Route::get('/settings', [UserSettingController::class, 'index'])->name('settings.index');
+Route::post('/settings/update', [UserSettingController::class, 'update'])->name('settings.update');
+
 
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -62,7 +67,7 @@ Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm']
 Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
-
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 ////////////////////////////////////////////////////////////////////////
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
@@ -70,11 +75,15 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {
-        Route::get('/manajer/home', [ManajerController::class, 'index'])->name('manager_home');
+        Route::get('/manager/home', [ManajerController::class, 'index'])->name('manager_home');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {
         Route::get('/staff/home', [StaffController::class, 'index'])->name('staff_home');
+        Route::get('/stock_transactions/staff_index', [StockTransactionController::class, 'staffIndex'])
+        ->name('stock_transactions.staff_index');
+        Route::get('/stock-transactions/pending', [StockTransactionController::class, 'pending'])->name('stock_transactions.pending');
+        Route::patch('/stock-transactions/{id}/confirm', [StockTransactionController::class, 'confirm'])->name('stock_transactions.confirm');
     });
 });
 /////////////////////////////////////////////////////////////////////////////////
@@ -87,10 +96,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/stock-transactions', [StockTransactionController::class, 'store'])->name('stock-transactions.store');
     });
 
-    Route::middleware('role:staff')->group(function () {
-        Route::get('/stock-transactions/pending', [StockTransactionController::class, 'pending'])->name('stock-transactions.pending');
-        Route::patch('/stock-transactions/{id}/confirm', [StockTransactionController::class, 'confirm'])->name('stock-transactions.confirm');
-    });
 
     Route::middleware('role:admin')->group(function () {
         Route::get('/stock-transactions', [StockTransactionController::class, 'index'])->name('stock-transactions.index');
