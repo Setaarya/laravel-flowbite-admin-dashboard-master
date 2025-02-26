@@ -114,10 +114,8 @@
                         <i class="fas fa-exchange-alt"></i> Transaksi
                     </a>
                 </li>
-                <li><a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'active' : '' }}"><i class="fas fa-box"></i> Produk</a></li>
-                <li><a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.index') ? 'active' : '' }}"><i class="fas fa-truck"></i> Supplier</a></li>
-                <li><a href="{{ route('stock_transactions.index') }}" class="{{ request()->routeIs('stock_transactions.index') ? 'active' : '' }}"><i class="fas fa-exchange-alt"></i> Transaksi</a></li>
-                <li><a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.index') ? 'active' : '' }}"><i class="fas fa-users"></i> Pengguna</a></li>        
+                <li><a href="{{ route('products.manger_index') }}" class="{{ request()->routeIs('products.manageri_ndex') ? 'active' : '' }}"><i class="fas fa-box"></i> Produk</a></li>
+                <li><a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.index') ? 'active' : '' }}"><i class="fas fa-truck"></i> Supplier</a></li>    
             </ul>
         </div>
 
