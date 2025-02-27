@@ -19,7 +19,6 @@
                 <tr>
                     <th class="px-4 py-3 text-left">ID</th>
                     <th class="px-4 py-3 text-left">Product</th>
-                    <th class="px-4 py-3 text-left">User</th>
                     <th class="px-4 py-3 text-left">Type</th>
                     <th class="px-4 py-3 text-left">Quantity</th>
                     <th class="px-4 py-3 text-left">Date</th>
@@ -33,7 +32,6 @@
                 <tr class="border-b hover:bg-gray-50">
                     <td class="px-4 py-3">{{ $transaction->id }}</td>
                     <td class="px-4 py-3">{{ $transaction->product->name ?? 'N/A' }}</td>
-                    <td class="px-4 py-3">{{ $transaction->user->name ?? 'N/A' }}</td>
                     <td class="px-4 py-3">
                         @php
                             $typeColor = match($transaction->type) {
@@ -48,7 +46,19 @@
                     </td>
                     <td class="px-4 py-3">{{ $transaction->quantity }}</td>
                     <td class="px-4 py-3">{{ \Carbon\Carbon::parse($transaction->date)->format('d M Y') }}</td>
-                    <td class="px-4 py-3">{{ $transaction->status ?? '-' }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        @php
+                            $statusColor = match (strtolower($transaction->status)) {
+                                'pending' => 'bg-yellow-500',
+                                'received' => 'bg-green-500',
+                                'dispatched' => 'bg-blue-500',
+                                default => 'bg-gray-500',
+                            };
+                        @endphp
+                        <span class="px-3 py-1 text-white text-sm rounded {{ $statusColor }}">
+                            {{ strtoupper($transaction->status) }}
+                        </span>
+                    </td>
                     <td class="px-4 py-3">{{ $transaction->notes ?? '-' }}</td>
                     <td class="px-4 py-3 text-center space-x-2">
                         <a href="{{ route('manager.stock_transactions.show', $transaction->id) }}" 

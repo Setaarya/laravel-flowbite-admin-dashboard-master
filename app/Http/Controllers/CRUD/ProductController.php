@@ -85,4 +85,10 @@ class ProductController extends Controller
         return view('manager.products.show', compact('product', 'attributes'));
         
     }
+
+    public function adminIndex()
+    {
+        $products = $this->productService->getAllProducts();
+        return view('admin.products.index', compact('products'));
+    }
 }

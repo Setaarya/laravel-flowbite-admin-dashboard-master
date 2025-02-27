@@ -62,4 +62,10 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
+
+    public function adminindex()
+    {
+        $users = $this->userService->getAllUsers();
+        return view('admin.users.index', compact('users'));
+    }
 }

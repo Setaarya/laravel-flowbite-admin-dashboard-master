@@ -73,23 +73,6 @@
         document.getElementById('imageModal').classList.add('hidden');
     }
 </script>
-<!-- Modal untuk menampilkan gambar -->
-<div id="imageModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center">
-    <div class="bg-white p-4 rounded-lg shadow-lg">
-        <button onclick="closeImage()" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded">X</button>
-        <img id="modalImage" src="" class="max-w-lg max-h-screen rounded">
-    </div>
-</div>
 
-<script>
-    function showImage(src) {
-        document.getElementById('modalImage').src = src;
-        document.getElementById('imageModal').classList.remove('hidden');
-    }
-
-    function closeImage() {
-        document.getElementById('imageModal').classList.add('hidden');
-    }
-</script>
 
 @endsection

@@ -85,10 +85,6 @@
                 <td>{{ $stockTransaction->product->name }}</td>
             </tr>
             <tr>
-                <th>User</th>
-                <td>{{ $stockTransaction->user->name }}</td>
-            </tr>
-            <tr>
                 <th>Type</th>
                 <td>{{ ucfirst($stockTransaction->type) }}</td>  {{-- Capitalize "in" -> "In", "out" -> "Out" --}}
             </tr>

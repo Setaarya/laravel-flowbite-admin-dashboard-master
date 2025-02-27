@@ -1,4 +1,5 @@
-@extends('staff.navbar')
+
+@extends('admin.navbar')
 
 @section('title', 'Transaksi Stok')
 

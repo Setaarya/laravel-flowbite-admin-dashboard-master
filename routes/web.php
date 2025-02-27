@@ -27,7 +27,7 @@ use App\Http\Controllers\UserSettingController;
 |
 */
 Route::get('/', [LandingPageController::class, 'index'])->name('index');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('index');
+Route::get('/admin/home', [DashboardController::class, 'index'])->name('index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
@@ -73,6 +73,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
         Route::get('/admin/home', [AdminController::class, 'index'])->name('admin_home');
+        Route::get('/admin/products/index', [ProductController::class, 'adminIndex'])->name('admin.products.index');
+        Route::get('/admin/stock_transactions/index', [StockTransactionController::class, 'Indexadmin'])->name('admin.stock_transactions.index');
+        Route::get('/admin/categories/index', [CategoryController::class, 'adminindex'])->name('admin.categories.index');
+        Route::get('/admin/suppliers/index', [SupplierController::class, 'adminindex'])->name('admin.suppliers.index');
+        Route::get('/admin/users/index', [UserController::class, 'adminindex'])->name('admin.users.index');
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {

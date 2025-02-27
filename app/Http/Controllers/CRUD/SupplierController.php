@@ -66,4 +66,9 @@ class SupplierController extends Controller
         return view('manager.suppliers.index', compact('suppliers'));
     }
 
+    public function adminindex()
+    {
+        $suppliers = $this->supplierService->getAllSuppliers();
+        return view('admin.suppliers.index', compact('suppliers'));
+    }
 }

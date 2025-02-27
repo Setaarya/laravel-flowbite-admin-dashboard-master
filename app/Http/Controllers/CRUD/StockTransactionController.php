@@ -5,9 +5,11 @@ namespace App\Http\Controllers\CRUD;
 use App\Http\Controllers\Controller;
 use App\Models\StockTransaction;
 use App\Models\Product;
+use App\Models\User;
 use App\Services\StockTransactionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class StockTransactionController extends Controller
 {
@@ -41,7 +43,8 @@ class StockTransactionController extends Controller
         }
 
         $products = Product::all();
-        return view('manager.stock_transactions.create', compact('products'));
+        $users = User::all();
+        return view('manager.stock_transactions.create', compact('products', 'users'));
     }
 
     /**
@@ -106,11 +109,11 @@ class StockTransactionController extends Controller
     public function indexAdmin()
     {
         if (Auth::user()->role !== 'Admin') {
-            return redirect()->route('dashboard')->with('error', 'Unauthorized.');
+            return redirect()->route('admin.home')->with('error', 'Unauthorized.');
         }
 
         $transactions = $this->stockTransactionService->getAllTransactions();
-        return view('stock_transactions.index', compact('transactions'));
+        return view('admin.stock_transactions.index', compact('transactions'));
     }
 
     public function staffindex()
@@ -130,6 +133,7 @@ class StockTransactionController extends Controller
      */
     public function managerShow(StockTransaction $stockTransaction)
     {
+        $stockTransaction = StockTransaction::with(['product', 'user']);
         return view('manager.stock_transactions.show', compact('stockTransaction'));
     }
 

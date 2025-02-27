@@ -59,4 +59,10 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
+
+    public function adminindex()
+    {
+        $categories = $this->categoryService->getAllCategories();
+        return view('admin.categories.index', compact('categories'));
+    }
 }
