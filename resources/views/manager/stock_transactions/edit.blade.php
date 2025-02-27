@@ -68,7 +68,7 @@
 <body>
     <div class="container">
         <h1>Edit Stock Transaction</h1>
-        <form action="{{ route('stock_transactions.update', $stockTransaction->id) }}" method="POST">
+        <form action="{{ route('manager.stock_transactions.update', $stockTransaction->id) }}" method="POST">
             @csrf
             @method('PUT')
 

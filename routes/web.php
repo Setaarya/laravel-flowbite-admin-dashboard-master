@@ -68,6 +68,8 @@ Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])-
 Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 ////////////////////////////////////////////////////////////////////////
+
+
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
         Route::get('/admin/home', [AdminController::class, 'index'])->name('admin_home');
@@ -76,14 +78,21 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Manajer Gudang'])->group(function () {
         Route::get('/manager/home', [ManajerController::class, 'index'])->name('manager_home');
         Route::get('/manager/products/index', [ProductController::class, 'managerIndex'])->name('manager.products.index');
-    Route::get('/manager/products/show', [ProductController::class, 'managerShow'])->name('manager.products.show');
+        Route::get('/manager/products/show', [ProductController::class, 'managerShow'])->name('manager.products.show');
+        Route::get('/manager/suppliers/index', [SupplierController::class, 'managerIndex'])->name('manager.suppliers.index');
+        Route::get('/manager/stock_transactions/index', [StockTransactionController::class, 'managerindex'])->name('manager.stock_transactions.index');
+        Route::get('/manager/stock_transactions/create', [StockTransactionController::class, 'create'])->name('manager.stock_transactions.create');
+        Route::post('/stock-transactions', [StockTransactionController::class, 'store'])->name('manager.stock_transactions.store');
+        Route::get('/manager/stock_transactions/show', [StockTransactionController::class, 'managerShow'])->name('manager.stock_transactions.show');
+        Route::get('/manager/stock_transactions/edit', [StockTransactionController::class, 'manageredit'])->name('manager.stock_transactions.edit');
+        Route::patch('/manager/stock_transactions/{stockTransaction}', [StockTransactionController::class, 'managerupdate'])->name('manager.stock_transactions.update');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {
         Route::get('/staff/home', [StaffController::class, 'index'])->name('staff_home');
         Route::get('/stock-transactions/pending', [StockTransactionController::class, 'pending'])->name('stock_transactions.pending');
         Route::patch('/stock-transactions/{id}/confirm', [StockTransactionController::class, 'confirm'])->name('stock_transactions.confirm');
-        Route::get('/stock_transactions/staff_index', [StockTransactionController::class, 'staffIndex'])->name('stock_transactions.staff_index');
+        Route::get('/staff/stock_transactions/index', [StockTransactionController::class, 'staffIndex'])->name('stock_transactions.staff_index');
     });
 });
 /////////////////////////////////////////////////////////////////////////////////
@@ -92,10 +101,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::middleware('role:manager')->group(function () {
-        Route::get('/stock-transactions/create', [StockTransactionController::class, 'create'])->name('stock-transactions.create');
-        Route::post('/stock-transactions', [StockTransactionController::class, 'store'])->name('stock-transactions.store');
-    });
 
 
     Route::middleware('role:admin')->group(function () {

@@ -78,12 +78,11 @@ class ProductController extends Controller
     }
 
     // Menampilkan detail produk untuk manajer
-    public function managerShow()
+    public function managerShow(Product $product)
     {
-        $product = $this->productService->getAllProducts();
-        if (!$product) {
-            return redirect()->route('manager.products.index')->with('error', 'Produk tidak ditemukan');
-        }
-        return view('manager.products.show', compact('product'));
+        $attributes = $this->productAttributeService->getAllProductAttributes()->where('product_id', $product->id);
+        
+        return view('manager.products.show', compact('product', 'attributes'));
+        
     }
 }

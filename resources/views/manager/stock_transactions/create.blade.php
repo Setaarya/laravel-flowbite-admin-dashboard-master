@@ -68,7 +68,7 @@
 <body>
     <div class="container">
         <h1>Create Stock Transaction</h1>
-        <form action="{{ route('stock_transactions.store') }}" method="POST">
+        <form action="{{ route('manager.stock_transactions.store') }}" method="POST">
             @csrf
 
             <label>Product:</label>

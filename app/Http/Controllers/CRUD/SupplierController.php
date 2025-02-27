@@ -59,4 +59,11 @@ class SupplierController extends Controller
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully.');
     }
+
+    public function managerIndex()
+    {
+        $suppliers = $this->supplierService->getAllSuppliers();
+        return view('manager.suppliers.index', compact('suppliers'));
+    }
+
 }

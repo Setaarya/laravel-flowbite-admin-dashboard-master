@@ -37,11 +37,11 @@ class StockTransactionController extends Controller
     public function create()
     {
         if (Auth::user()->role !== 'Manajer Gudang') {
-            return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+            return redirect()->route('manager.stock_transactions.index')->with('error', 'Unauthorized.');
         }
 
         $products = Product::all();
-        return view('stock_transactions.create', compact('products'));
+        return view('manager.stock_transactions.create', compact('products'));
     }
 
     /**
@@ -50,7 +50,7 @@ class StockTransactionController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->role !== 'Manajer Gudang') {
-            return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+            return redirect()->route('manager.stock_transactions.index')->with('error', 'Unauthorized.');
         }
 
         $request->validate([
@@ -63,7 +63,7 @@ class StockTransactionController extends Controller
 
         $this->stockTransactionService->createStockTransaction(Auth::id(), $request->all());
 
-        return redirect()->route('stock_transactions.index')->with('success', 'Transaksi stok berhasil dibuat.');
+        return redirect()->route('manager.stock_transactions.index')->with('success', 'Transaksi stok berhasil dibuat.');
     }
 
     /**
@@ -116,15 +116,21 @@ class StockTransactionController extends Controller
     public function staffindex()
     {
         $transactions = $this->stockTransactionService->getAllTransactions()->last()->get();
-        return view('stock_transactions.staff_index', compact('transactions'));
+        return view('staff.stock_transactions.index', compact('transactions'));
+    }
+
+    public function managerindex()
+    {
+        $transactions = $this->stockTransactionService->getAllTransactions()->last()->get();
+        return view('manager.stock_transactions.index', compact('transactions'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(StockTransaction $stockTransaction)
+    public function managerShow(StockTransaction $stockTransaction)
     {
-        return view('stock_transactions.show', compact('stockTransaction'));
+        return view('manager.stock_transactions.show', compact('stockTransaction'));
     }
 
 
@@ -132,25 +138,25 @@ class StockTransactionController extends Controller
      * Menampilkan form edit transaksi stok.
      * Hanya Manager yang bisa mengedit transaksi yang dibuatnya dan masih berstatus "pending".
      */
-    public function edit(StockTransaction $stockTransaction)
+    public function manageredit(StockTransaction $stockTransaction)
     {
         $user = Auth::user();
 
         // Cek apakah user adalah manager dan hanya bisa edit transaksi miliknya yang masih pending
-        if ($user->role === 'manager' && $stockTransaction->user_id === $user->id && $stockTransaction->status === 'pending') {
-            return view('stock_transactions.edit', compact('stockTransaction'));
+        if ($user->role === 'Manajer Gudang' && $stockTransaction->user_id === $user->id && $stockTransaction->status === 'pending') {
+            return view('manager.stock_transactions.edit', compact('stockTransaction'));
         }
 
-        return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+        return redirect()->route('manager.stock_transactions.index')->with('error', 'Unauthorized.');
     }
 
-    public function update(Request $request, StockTransaction $stockTransaction)
+    public function managerupdate(Request $request, StockTransaction $stockTransaction)
     {
         $user = Auth::user();
 
         // Cek apakah user adalah manager dan hanya bisa update transaksi miliknya yang masih pending
         if ($user->role !== 'Manajer Gudang' || $stockTransaction->user_id !== $user->id || $stockTransaction->status !== 'pending') {
-            return redirect()->route('stock_transactions.index')->with('error', 'Unauthorized.');
+            return redirect()->route('manager.stock_transactions.index')->with('error', 'Unauthorized.');
         }
 
          // Validasi data menggunakan service
@@ -166,8 +172,9 @@ class StockTransactionController extends Controller
              'notes' => $request->notes,
          ]);
  
-         return redirect()->route('stock_transactions.index')->with('success', 'Stock transaction created successfully.');
+         return redirect()->route('manager.stock_transactions.index')->with('success', 'Stock transaction created successfully.');
      }
 
 }
+
 

@@ -74,7 +74,7 @@
 <body>
     <div class="container">
         <h1>Stock Transaction Details</h1>
-        <a href="{{ route('stock_transactions.index') }}">Back to Stock Transactions List</a>
+        <a href="{{ route('manager.stock_transactions.index') }}">Back to Stock Transactions List</a>
         <table>
             <tr>
                 <th>ID</th>
@@ -117,7 +117,7 @@
                 <td>{{ $stockTransaction->updated_at->format('d M Y H:i') }}</td>
             </tr>
         </table>
-        <a href="{{ route('stock_transactions.edit', $stockTransaction->id) }}">Edit Stock Transaction</a>
+        <a href="{{ route('manager.stock_transactions.edit', $stockTransaction->id) }}">Edit Stock Transaction</a>
     </div>
 </body>
 </html>

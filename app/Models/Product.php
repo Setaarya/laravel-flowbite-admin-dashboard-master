@@ -49,5 +49,11 @@ class Product extends Model
         return $this->current_stock < $this->minimum_stock;
     }
 
+    public function attributes()
+    {
+        return $this->hasMany(ProductAttribute::class);
+    }
+
+
 }
 ?>

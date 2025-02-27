@@ -3,170 +3,89 @@
 @section('title', 'Detail Produk')
 
 @section('content')
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Product Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .image-preview {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .image-preview img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        a, button {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 10px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a {
-            background-color: #3182ce;
-            color: white;
-        }
-        a:hover {
-            background-color: #2b6cb0;
-        }
-        button {
-            background-color: #e53e3e;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #c53030;
-        }
-        form {
-            display: inline-block;
-            width: 100%;
-        }
-        .attributes-table {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Product Details</h1>
+<div class="container mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">Detail Produk</h1>
 
-        <div class="image-preview">
-            @if ($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image">
+        <!-- Gambar Produk -->
+        <div class="flex justify-center mb-4">
+            @if (!empty($product->image) && file_exists(public_path('storage/' . $product->image)))
+                <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-64 h-64 object-cover rounded-lg">
             @else
-                <p>No Image Available</p>
+                <img src="{{ asset('images/default-product.png') }}" alt="Default Image" class="w-64 h-64 object-cover rounded-lg">
             @endif
         </div>
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <td>{{ $product->id }}</td>
-            </tr>
-            <tr>
-                <th>Category</th>
-                <td>{{ $product->category->name }}</td>
-            </tr>
-            <tr>
-                <th>Supplier</th>
-                <td>{{ $product->supplier->name }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ $product->name }}</td>
-            </tr>
-            <tr>
-                <th>SKU</th>
-                <td>{{ $product->sku }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ $product->description }}</td>
-            </tr>
-            <tr>
-                <th>Purchase Price</th>
-                <td>Rp {{ number_format($product->purchase_price, 2, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <th>Selling Price</th>
-                <td>Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <th>Current Stock</th>
-                <td>{{ $product->current_stock }}</td>
-            </tr>
-            <tr>
-                <th>Minimum Stock</th>
-                <td>{{ $product->minimum_stock }}</td>
-            </tr>
-            <tr>
-                <th>Created At</th>
-                <td>{{ $product->created_at }}</td>
-            </tr>
-            <tr>
-                <th>Updated At</th>
-                <td>{{ $product->updated_at }}</td>
-            </tr>
-        </table>
+        <!-- Tabel Informasi Produk -->
+        <div class="overflow-x-auto">
+            <table class="w-full border border-gray-300 rounded-lg">
+                <tbody>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">ID</th>
+                        <td class="px-4 py-2">{{ $product->id }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">Nama</th>
+                        <td class="px-4 py-2">{{ $product->name }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">SKU</th>
+                        <td class="px-4 py-2">{{ $product->sku }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">Kategori</th>
+                        <td class="px-4 py-2">{{ optional($product->category)->name ?? 'No Category' }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">Supplier</th>
+                        <td class="px-4 py-2">{{ optional($product->supplier)->name ?? 'No Supplier' }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">Deskripsi</th>
+                        <td class="px-4 py-2">{{ $product->description ?? '-' }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">Harga Beli</th>
+                        <td class="px-4 py-2">Rp {{ number_format($product->purchase_price, 2, ',', '.') }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">Harga Jual</th>
+                        <td class="px-4 py-2">Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="text-left px-4 py-2 bg-gray-200">Stok Saat Ini</th>
+                        <td class="px-4 py-2">{{ $product->current_stock }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left px-4 py-2 bg-gray-200">Stok Minimum</th>
+                        <td class="px-4 py-2">{{ $product->minimum_stock }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Menampilkan Product Attributes -->
-        @if ($product->attributes->count() > 0)
-            <h2>Attributes</h2>
-            <table class="attributes-table">
-                <tr>
-                    <th>Attribute</th>
-                    <th>Value</th>
-                </tr>
-                @foreach ($product->attributes as $attribute)
-                <tr>
-                    <td>{{ $attribute->name }}</td>
-                    <td>{{ $attribute->value }}</td>
-                </tr>
-                @endforeach
+        <!-- Tabel Atribut Produk -->
+        @if (($product->attributes ?? collect())->count() > 0)
+            <h2 class="text-xl font-semibold text-gray-700 mt-6 mb-2">Atribut Produk</h2>
+            <table class="w-full border border-gray-300 rounded-lg">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="text-left px-4 py-2">Atribut</th>
+                        <th class="text-left px-4 py-2">Nilai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($product->attributes as $attribute)
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ $attribute->name }}</td>
+                        <td class="px-4 py-2">{{ $attribute->value }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         @else
-            <p>No Attributes Available</p>
+            <p class="text-gray-500 mt-4">Tidak ada atribut yang tersedia.</p>
         @endif
     </div>
-</body>
-</html>
+</div>
 @endsection

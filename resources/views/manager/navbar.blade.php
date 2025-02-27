@@ -110,7 +110,13 @@
             <div class="sidebar-header">Stockify</div>
             <ul>
                 <li>
-                    <a href="{{ route('manager.stock_transactions.index') }}" class="{{ request()->routeIs('manager.stock_transactions.index') ? 'active' : '' }}">
+                    <a href="{{ route('manager_home') }}" class="back-button">
+                        <i class="fas fa-arrow-left"></i>Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('manager.stock_transactions.index') }}" 
+                    class="{{ request()->routeIs('manager.stock_transactions.index') ? 'active' : '' }}">
                         <i class="fas fa-exchange-alt"></i> Transaksi
                     </a>
                 </li>
@@ -120,7 +126,9 @@
                        <i class="fas fa-box"></i> Produk
                     </a>
                 </li>
-                <li><a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.index') ? 'active' : '' }}"><i class="fas fa-truck"></i> Supplier</a></li>    
+                <li><a href="{{ route('manager.suppliers.index') }}" 
+                    class="{{ request()->routeIs('manager.suppliers.index') ? 'active' : '' }}">
+                    <i class="fas fa-truck"></i> Supplier</a></li>    
             </ul>
         </div>
 

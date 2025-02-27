@@ -104,13 +104,22 @@
     </style>
 </head>
 <body>
+
     <!-- Sidebar -->
     <nav class="sidebar">
         <div>
             <div class="sidebar-header">Stockify</div>
+
+            <!-- Tombol Kembali ke Dashboard -->
             <ul>
                 <li>
-                    <a href="{{ route('stock_transactions.staff_index') }}" class="{{ request()->routeIs('stock_transactions.staff_index') ? 'active' : '' }}">
+                    <a href="{{ route('staff_home') }}" class="back-button">
+                        <i class="fas fa-arrow-left"></i>Dashboard
+                    </a>
+                <li>
+                <li>
+                    <a href="{{ route('stock_transactions.staff_index') }}" 
+                    class="{{ request()->routeIs('stock_transactions.staff_index') ? 'active' : '' }}">
                         <i class="fas fa-exchange-alt"></i> Transaksi
                     </a>
                 </li>
