@@ -133,7 +133,9 @@ class StockTransactionController extends Controller
      */
     public function managerShow(StockTransaction $stockTransaction)
     {
-        $stockTransaction = StockTransaction::with(['product', 'user']);
+        // Pastikan objek memiliki relasi yang diperlukan
+        $stockTransaction->load(['product', 'user']);
+
         return view('manager.stock_transactions.show', compact('stockTransaction'));
     }
 
@@ -144,14 +146,9 @@ class StockTransactionController extends Controller
      */
     public function manageredit(StockTransaction $stockTransaction)
     {
-        $user = Auth::user();
-
-        // Cek apakah user adalah manager dan hanya bisa edit transaksi miliknya yang masih pending
-        if ($user->role === 'Manajer Gudang' && $stockTransaction->user_id === $user->id && $stockTransaction->status === 'pending') {
-            return view('manager.stock_transactions.edit', compact('stockTransaction'));
-        }
-
-        return redirect()->route('manager.stock_transactions.index')->with('error', 'Unauthorized.');
+        $products = Product::all(); // Ambil semua produk dari database
+        $users = User::all(); // Ambil semua pengguna dari database
+        return view('manager.stock_transactions.edit', compact('stockTransaction', 'products', 'users'));        
     }
 
     public function managerupdate(Request $request, StockTransaction $stockTransaction)
@@ -163,21 +160,27 @@ class StockTransactionController extends Controller
             return redirect()->route('manager.stock_transactions.index')->with('error', 'Unauthorized.');
         }
 
-         // Validasi data menggunakan service
-         $this->stockTransactionService->validateStockTransactionData($request);
+        // Validasi data
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'type' => 'required|in:masuk,keluar',
+            'quantity' => 'required|integer|min:1',
+            'date' => 'required|date',
+            'notes' => 'nullable|string',
+        ]);
 
-         StockTransaction::create([
-             'product_id' => $request->product_id,
-             'user_id' => Auth::id(),
-             'type' => $request->type,
-             'quantity' => $request->quantity,
-             'date' => $request->date,
-             'status' => 'pending',
-             'notes' => $request->notes,
-         ]);
- 
-         return redirect()->route('manager.stock_transactions.index')->with('success', 'Stock transaction created successfully.');
-     }
+        // Update data transaksi stok
+        $stockTransaction->update([
+            'product_id' => $request->product_id,
+            'type' => $request->type,
+            'quantity' => $request->quantity,
+            'date' => $request->date,
+            'notes' => $request->notes,
+        ]);
+
+        return redirect()->route('manager.stock_transactions.index')->with('success', 'Stock transaction updated successfully.');
+    }
+
 
 }
 

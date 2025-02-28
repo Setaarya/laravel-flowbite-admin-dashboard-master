@@ -6,7 +6,7 @@
 <div class="container mx-auto p-6">
     <h1 class="text-2xl font-bold text-gray-700 text-center mb-6">Stock Transactions List</h1>
 
-    <div class="flex justify-end mb-4">
+    <div class="w-full flex justify-start mb-4">
         <a href="{{ route('manager.stock_transactions.create') }}" 
            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md">
             Create New Stock Transaction

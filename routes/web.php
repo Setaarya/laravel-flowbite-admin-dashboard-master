@@ -70,6 +70,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 ////////////////////////////////////////////////////////////////////////
 
 
+
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
         Route::get('/admin/home', [AdminController::class, 'index'])->name('admin_home');
@@ -77,20 +78,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/stock_transactions/index', [StockTransactionController::class, 'Indexadmin'])->name('admin.stock_transactions.index');
         Route::get('/admin/categories/index', [CategoryController::class, 'adminindex'])->name('admin.categories.index');
         Route::get('/admin/suppliers/index', [SupplierController::class, 'adminindex'])->name('admin.suppliers.index');
+        Route::get('/admin/suppliers/create', [SupplierController::class, 'admincreate'])->name('admin.suppliers.create');
+        Route::get('/admin/suppliers/{supplier}', [SupplierController::class, 'adminshow'])->name('admin.suppliers.show');
+        Route::get('/admin/suppliers/{supplier}/edit', [SupplierController::class, 'adminedit'])->name('admin.suppliers.edit');
+        Route::post('/admin/suppliers', [SupplierController::class, 'adminstore'])->name('admin.suppliers.store');
+        Route::put('/admin/suppliers/{supplier}', [SupplierController::class, 'adminupdate'])->name('admin.suppliers.update'); // Update supplier
+        Route::delete('/', [SupplierController::class, 'admindestroy'])->name('admin.suppliers.destroy');
         Route::get('/admin/users/index', [UserController::class, 'adminindex'])->name('admin.users.index');
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {
         Route::get('/manager/home', [ManajerController::class, 'index'])->name('manager_home');
         Route::get('/manager/products/index', [ProductController::class, 'managerIndex'])->name('manager.products.index');
-        Route::get('/manager/products/show', [ProductController::class, 'managerShow'])->name('manager.products.show');
+        Route::get('/manager/products/{product}', [ProductController::class, 'managerShow'])->name('manager.products.show');
         Route::get('/manager/suppliers/index', [SupplierController::class, 'managerIndex'])->name('manager.suppliers.index');
         Route::get('/manager/stock_transactions/index', [StockTransactionController::class, 'managerindex'])->name('manager.stock_transactions.index');
         Route::get('/manager/stock_transactions/create', [StockTransactionController::class, 'create'])->name('manager.stock_transactions.create');
-        Route::post('/stock-transactions', [StockTransactionController::class, 'store'])->name('manager.stock_transactions.store');
-        Route::get('/manager/stock_transactions/show', [StockTransactionController::class, 'managerShow'])->name('manager.stock_transactions.show');
-        Route::get('/manager/stock_transactions/edit', [StockTransactionController::class, 'manageredit'])->name('manager.stock_transactions.edit');
-        Route::patch('/manager/stock_transactions/{stockTransaction}', [StockTransactionController::class, 'managerupdate'])->name('manager.stock_transactions.update');
+        Route::post('/manager/stock_transactions', [StockTransactionController::class, 'store'])->name('manager.stock_transactions.store');
+        Route::get('/manager/stock_transactions/{stockTransaction}', [StockTransactionController::class, 'managerShow'])->name('manager.stock_transactions.show');
+        Route::get('/manager/stock_transactions/{stockTransaction}/edit', [StockTransactionController::class, 'manageredit'])->name('manager.stock_transactions.edit');
+        Route::put('/manager/stock_transactions/{stockTransaction}', [StockTransactionController::class, 'managerupdate'])->name('manager.stock_transactions.update');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {

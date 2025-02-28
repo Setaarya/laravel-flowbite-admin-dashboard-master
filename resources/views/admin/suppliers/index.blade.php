@@ -7,8 +7,8 @@
     <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">Daftar Supplier</h1>
 
     <div class="flex justify-between mb-4">
-        <a href="{{ route('suppliers.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-            Tambah Supplier
+        <a href="{{ route('admin.suppliers.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            + Tambah Supplier
         </a>
     </div>
 
@@ -38,19 +38,19 @@
                     <td class="py-3 px-4 border">{{ $supplier->updated_at }}</td>
                     <td class="py-3 px-4 border flex space-x-2">
                         <!-- Tombol Show -->
-                        <a href="{{ route('suppliers.show', $supplier->id) }}"
+                        <a href="{{ route('admin.suppliers.show', $supplier->id) }}"
                             class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
                             Show
                         </a>
 
                         <!-- Tombol Edit -->
-                        <a href="{{ route('suppliers.edit', $supplier->id) }}"
+                        <a href="{{ route('admin.suppliers.edit', $supplier->id) }}"
                             class="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
                             Edit
                         </a>
 
                         <!-- Tombol Delete -->
-                        <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST"
+                        <form action="{{ route('admin.suppliers.destroy', $supplier->id) }}" method="POST"
                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus supplier ini?');">
                             @csrf
                             @method('DELETE')

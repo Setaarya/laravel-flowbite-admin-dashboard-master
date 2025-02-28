@@ -3,118 +3,71 @@
 @section('title', 'Detail Transaksi')
 
 @section('content')
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Stock Transaction Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #3182ce;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        a:hover {
-            background-color: #2b6cb0;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #e53e3e;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #c53030;
-        }
-        form {
-            display: inline-block;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Stock Transaction Details</h1>
-        <a href="{{ route('manager.stock_transactions.index') }}">Back to Stock Transactions List</a>
-        <table>
-            <tr>
-                <th>ID</th>
-                <td>{{ $stockTransaction->id }}</td>
-            </tr>
-            <tr>
-                <th>Product</th>
-                <td>{{ $stockTransaction->product->name }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ ucfirst($stockTransaction->type) }}</td>  {{-- Capitalize "in" -> "In", "out" -> "Out" --}}
-            </tr>
-            <tr>
-                <th>Quantity</th>
-                <td>{{ $stockTransaction->quantity }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ \Carbon\Carbon::parse($stockTransaction->date)->format('d M Y') }}</td> {{-- Format tanggal --}}
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ ucfirst($stockTransaction->status) }}</td> {{-- Capitalize "pending", "completed", "canceled" --}}
-            </tr>
-            <tr>
-                <th>Notes</th>
-                <td>{{ $stockTransaction->notes ?? 'No notes available' }}</td> {{-- Default jika notes kosong --}}
-            </tr>
-            <tr>
-                <th>Created At</th>
-                <td>{{ $stockTransaction->created_at->format('d M Y H:i') }}</td> {{-- Format timestamp --}}
-            </tr>
-            <tr>
-                <th>Updated At</th>
-                <td>{{ $stockTransaction->updated_at->format('d M Y H:i') }}</td>
-            </tr>
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold text-gray-700 text-center mb-6">Stock Transaction Details</h1>
+
+    <!-- Card Detail Transaksi -->
+    <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-2xl mx-auto">
+        <table class="w-full border-collapse">
+            <tbody>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">ID</th>
+                    <td class="px-4 py-2">{{ $stockTransaction->id }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">Product</th>
+                    <td class="px-4 py-2">{{ $stockTransaction->product->name }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">Type</th>
+                    <td class="px-4 py-2">{{ ucfirst($stockTransaction->type) }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">Quantity</th>
+                    <td class="px-4 py-2">{{ $stockTransaction->quantity }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">Date</th>
+                    <td class="px-4 py-2">{{ \Carbon\Carbon::parse($stockTransaction->date)->format('d M Y') }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">Status</th>
+                    <td class="px-4 py-2">
+                        @php
+                            $statusColor = match (strtolower($stockTransaction->status)) {
+                                'pending' => 'bg-yellow-500',
+                                'received' => 'bg-green-500',
+                                'dispatched' => 'bg-blue-500',
+                                default => 'bg-gray-500',
+                            };
+                        @endphp
+                        <span class="px-3 py-1 text-white text-sm rounded {{ $statusColor }}">
+                            {{ strtoupper($stockTransaction->status) }}
+                        </span>
+                    </td>
+                </tr>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">Notes</th>
+                    <td class="px-4 py-2">{{ $stockTransaction->notes ?? 'No notes available' }}</td>
+                </tr>
+                <tr class="border-b">
+                    <th class="text-left px-4 py-2 bg-gray-100">Created At</th>
+                    <td class="px-4 py-2">{{ $stockTransaction->created_at->format('d M Y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left px-4 py-2 bg-gray-100">Updated At</th>
+                    <td class="px-4 py-2">{{ $stockTransaction->updated_at->format('d M Y H:i') }}</td>
+                </tr>
+            </tbody>
         </table>
-        <a href="{{ route('manager.stock_transactions.edit', $stockTransaction->id) }}">Edit Stock Transaction</a>
+
+        <!-- Tombol Edit -->
+        <div class="mt-4">
+            <a href="{{ route('manager.stock_transactions.edit', $stockTransaction->id) }}" 
+               class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md">
+                Edit Stock Transaction
+            </a>
+        </div>
     </div>
-</body>
-</html>
+</div>
 @endsection
