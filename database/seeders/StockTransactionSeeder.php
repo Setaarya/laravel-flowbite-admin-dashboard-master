@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Faker\Factory as Faker;
 
 
 class StockTransactionSeeder extends Seeder
@@ -16,63 +17,26 @@ class StockTransactionSeeder extends Seeder
      */
     public function run(): void
     {
-        $transactions = [
-            [
-                'product_id' => 1,
-                'user_id'    => 445566,
-                'type'       => 'masuk',
-                'quantity'   => 50,
-                'date'       => '2025-02-20',
-                'status'     => 'received',
-                'notes'      => 'Pengisian stok awal',
-            ],
-            [
-                'product_id' => 2,
-                'user_id'    => 445567,
-                'type'       => 'keluar',
-                'quantity'   => 20,
-                'date'       => '2025-02-21',
-                'status'     => 'dispatched',
-                'notes'      => 'Pesanan pelanggan A',
-            ],
-            [
-                'product_id' => 3,
-                'user_id'    => 445568,
-                'type'       => 'masuk',
-                'quantity'   => 30,
-                'date'       => '2025-02-22',
-                'status'     => 'pending',
-                'notes'      => 'Menunggu konfirmasi pemasok',
-            ],
-            [
-                'product_id' => 1,
-                'user_id'    => 445569,
-                'type'       => 'keluar',
-                'quantity'   => 15,
-                'date'       => '2025-02-23',
-                'status'     => 'dispatched',
-                'notes'      => 'Dikirim ke toko cabang',
-            ],
-            [
-                'product_id' => 4,
-                'user_id'    => 4455666,
-                'type'       => 'masuk',
-                'quantity'   => 60,
-                'date'       => '2025-02-24',
-                'status'     => 'received',
-                'notes'      => 'Restock produk dari supplier',
-            ],
-        ];
+        $faker = Faker::create();
 
-        foreach ($transactions as $transaction) {
+        // Pastikan ada data di tabel users dan products
+        $userIds = DB::table('users')->pluck('id')->toArray();
+        $productIds = DB::table('products')->pluck('id')->toArray();
+
+        if (empty($userIds) || empty($productIds)) {
+            $this->command->warn('Tabel Users atau Products kosong! Pastikan telah menjalankan seeder untuk tabel tersebut.');
+            return;
+        }
+
+        foreach (range(1, 10) as $index) {
             DB::table('stock_transactions')->insert([
-                'product_id' => $transaction['product_id'],
-                'user_id'    => $transaction['user_id'],
-                'type'       => $transaction['type'],
-                'quantity'   => $transaction['quantity'],
-                'date'       => $transaction['date'],
-                'status'     => $transaction['status'],
-                'notes'      => $transaction['notes'],
+                'product_id' => $faker->randomElement($productIds),
+                'user_id'    => $faker->randomElement($userIds),
+                'type'       => $faker->randomElement(['masuk', 'keluar']),
+                'quantity'   => $faker->numberBetween(1, 10),
+                'date'       => $faker->date('Y-m-d'),
+                'status'     => $faker->randomElement(['pending']),
+                'notes'      => $faker->sentence,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -43,5 +44,22 @@ class UserService
             'password' => $id ? 'nullable|string|min:8|confirmed' : 'required|string|min:8|confirmed',
             'role' => 'required|in:Admin,Staff Gudang,Manager Gudang',
         ]);
+    }
+
+    public function updateSetting($id, $data)
+    {
+        $validatedData = validator($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:8|confirmed',
+        ])->validate();
+
+        if (!empty($validatedData['password'])) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
+        }
+
+        return $this->userRepository->update($id, $validatedData);
     }
 }

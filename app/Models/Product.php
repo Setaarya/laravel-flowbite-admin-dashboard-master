@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Product extends Model
 {
     use HasFactory;
@@ -18,6 +19,7 @@ class Product extends Model
         'purchase_price',
         'selling_price',
         'image',
+        'current_stock', 
         'minimum_stock',
     ];
 
@@ -30,5 +32,28 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    /**
+     * Relasi ke stok transaksi
+     */
+    public function stockTransactions()
+    {
+        return $this->hasMany(StockTransaction::class);
+    }
+
+    /**
+     * Cek apakah stok di bawah batas minimum
+     */
+    public function isStockLow(): bool
+    {
+        return $this->current_stock < $this->minimum_stock;
+    }
+
+    public function attributes()
+    {
+        return $this->hasMany(ProductAttribute::class);
+    }
+
+
 }
 ?>

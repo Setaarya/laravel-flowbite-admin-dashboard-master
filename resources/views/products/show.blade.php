@@ -17,7 +17,7 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 400px;
         }
         h1 {
             text-align: center;
@@ -36,40 +36,62 @@
         th {
             background-color: #f2f2f2;
         }
+        .image-preview {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        a, button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
         a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
             background-color: #3182ce;
             color: white;
-            text-decoration: none;
-            border-radius: 4px;
         }
         a:hover {
             background-color: #2b6cb0;
         }
         button {
-            padding: 10px 20px;
             background-color: #e53e3e;
             color: white;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
         }
         button:hover {
             background-color: #c53030;
         }
         form {
             display: inline-block;
-            margin-top: 10px;
+            width: 100%;
+        }
+        .attributes-table {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Product Details</h1>
-        <a href="{{ route('products.index') }}">Back to Product List</a>
+
+        <div class="image-preview">
+            @if ($product->image)
+                <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image">
+            @else
+                <p>No Image Available</p>
+            @endif
+        </div>
+
         <table>
             <tr>
                 <th>ID</th>
@@ -97,15 +119,11 @@
             </tr>
             <tr>
                 <th>Purchase Price</th>
-                <td>{{ $product->purchase_price }}</td>
+                <td>Rp {{ number_format($product->purchase_price, 2, ',', '.') }}</td>
             </tr>
             <tr>
                 <th>Selling Price</th>
-                <td>{{ $product->selling_price }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ $product->image }}</td>
+                <td>Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
             </tr>
             <tr>
                 <th>Minimum Stock</th>
@@ -120,8 +138,30 @@
                 <td>{{ $product->updated_at }}</td>
             </tr>
         </table>
+
+        <!-- Menampilkan Product Attributes -->
+        @if ($product->attributes->count() > 0)
+            <h2>Attributes</h2>
+            <table class="attributes-table">
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+                @foreach ($product->attributes as $attribute)
+                <tr>
+                    <td>{{ $attribute->name }}</td>
+                    <td>{{ $attribute->value }}</td>
+                </tr>
+                @endforeach
+            </table>
+        @else
+            <p>No Attributes Available</p>
+        @endif
+
+        <a href="{{ route('products.index') }}">Back to Product List</a>
         <a href="{{ route('products.edit', $product->id) }}">Edit Product</a>
-        <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+
+        <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
             @csrf
             @method('DELETE')
             <button type="submit">Delete Product</button>

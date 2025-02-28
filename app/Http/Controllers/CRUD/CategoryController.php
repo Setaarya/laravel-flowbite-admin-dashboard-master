@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
+use App\Http\Controllers\Controller;
 use App\Services\CategoryService;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -57,5 +58,11 @@ class CategoryController extends Controller
         $this->categoryService->deleteCategory($category);
 
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+    }
+
+    public function adminindex()
+    {
+        $categories = $this->categoryService->getAllCategories();
+        return view('admin.categories.index', compact('categories'));
     }
 }

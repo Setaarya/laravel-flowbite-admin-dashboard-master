@@ -50,6 +50,20 @@
             background-color: #f7fafc;
         }
 
+        .status-in {
+            background-color: #48bb78;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .status-out {
+            background-color: #e53e3e;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
         button {
             padding: 6px 12px;
             background-color: #e53e3e;
@@ -83,17 +97,21 @@
         @foreach ($transactions as $transaction)
         <tr>
             <td>{{ $transaction->id }}</td>
-            <td>{{ $transaction->product->name }}</td>
-            <td>{{ $transaction->user->name }}</td>
-            <td>{{ $transaction->type }}</td>
+            <td>{{ $transaction->product->name ?? 'N/A' }}</td>
+            <td>{{ $transaction->user->name ?? 'N/A' }}</td>
+            <td>
+                <span class="{{ $transaction->type == 'in' ? 'status-in' : 'status-out' }}">
+                    {{ ucfirst($transaction->type) }}
+                </span>
+            </td>
             <td>{{ $transaction->quantity }}</td>
-            <td>{{ $transaction->date }}</td>
-            <td>{{ $transaction->status }}</td>
-            <td>{{ $transaction->notes }}</td>
+            <td>{{ \Carbon\Carbon::parse($transaction->date)->format('d M Y') }}</td>
+            <td>{{ $transaction->status ?? '-' }}</td>
+            <td>{{ $transaction->notes ?? '-' }}</td>
             <td>
                 <a href="{{ route('stock_transactions.show', $transaction->id) }}">Show</a>
                 <a href="{{ route('stock_transactions.edit', $transaction->id) }}">Edit</a>
-                <form action="{{ route('stock_transactions.destroy', $transaction->id) }}" method="POST" style="display:inline-block;">
+                <form action="{{ route('stock_transactions.destroy', $transaction->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this transaction?');">
                     @csrf
                     @method('DELETE')
                     <button type="submit">Delete</button>

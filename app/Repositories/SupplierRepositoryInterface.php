@@ -12,3 +12,4 @@ interface SupplierRepositoryInterface
     public function update(Supplier $supplier, array $data);
     public function delete(Supplier $supplier);
 }
+

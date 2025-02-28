@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
+use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -60,5 +61,11 @@ class UserController extends Controller
         $this->userService->deleteUser($user);
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    }
+
+    public function adminindex()
+    {
+        $users = $this->userService->getAllUsers();
+        return view('admin.users.index', compact('users'));
     }
 }

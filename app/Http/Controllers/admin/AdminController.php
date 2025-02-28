@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use App\Services\AdminDashboardServiceInterface;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,6 @@ class AdminController extends Controller
         $endDate = now()->toDateString();
 
         $data = $this->dashboardService->getDashboardData($startDate, $endDate);
-        return view('admin_home', compact('data'));
+        return view('admin.home', compact('data'));
     }
 }

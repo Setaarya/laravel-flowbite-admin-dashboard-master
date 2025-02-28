@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
+use App\Http\Controllers\Controller;
 use App\Services\ProductAttributeService;
 use App\Models\ProductAttribute;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductAttributeController extends Controller
@@ -23,7 +25,8 @@ class ProductAttributeController extends Controller
 
     public function create()
     {
-        return view('product_attributes.create');
+        $products = Product::all(); // Ambil semua produk
+        return view('product_attributes.create', compact('products'));
     }
 
     public function store(Request $request)
@@ -41,7 +44,8 @@ class ProductAttributeController extends Controller
 
     public function edit(ProductAttribute $productAttribute)
     {
-        return view('product_attributes.edit', compact('productAttribute'));
+        $products = Product::all(); // Ambil semua produk
+        return view('product_attributes.edit', compact('products', 'productAttribute'));
     }
 
     public function update(Request $request, ProductAttribute $productAttribute)

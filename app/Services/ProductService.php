@@ -22,6 +22,9 @@ class ProductService
 
     public function createProduct(array $data)
     {
+        if (!isset($data['current_stock'])) {
+            $data['current_stock'] = 0;
+        }
         return $this->productRepository->create($data);
     }
 
@@ -38,15 +41,16 @@ class ProductService
     public function validateProductData(Request $request)
     {
         return $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:255|unique:products,sku,' . $request->id,
-            'description' => 'nullable|string',
-            'purchase_price' => 'required|numeric',
-            'selling_price' => 'required|numeric',
-            'image' => 'nullable|string',
-            'minimum_stock' => 'required|integer',
+            'category_id'    => 'required|exists:categories,id',
+            'supplier_id'    => 'required|exists:suppliers,id',
+            'name'           => 'required|string|max:255',
+            'sku'            => 'required|string|max:255|unique:products,sku,' . $request->route('product'),
+            'description'    => 'nullable|string',
+            'purchase_price' => 'required|numeric|min:0',
+            'selling_price'  => 'required|numeric|min:0',
+            'image'          => 'nullable|image|mimes:jpg,png,jpeg|max:2048', 
+            'current_stock'  => 'nullable|integer|min:0',  // Ditambahkan agar sesuai database
+            'minimum_stock'  => 'required|integer|min:0',
         ]);
     }
 }

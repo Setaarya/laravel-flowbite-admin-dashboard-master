@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\ProductAttribute;
+use App\Models\Product;
+use Faker\Factory as Faker;
 
 class ProductAttributeSeeder extends Seeder
 {
@@ -13,6 +15,23 @@ class ProductAttributeSeeder extends Seeder
      */
     public function run(): void
     {
-        ProductAttribute::factory()->count(10)->create();
+        $faker = Faker::create();
+
+        // Ambil semua produk yang tersedia
+        $products = Product::all();
+
+        if ($products->isEmpty()) {
+            echo "Seeder gagal: Tidak ada produk dalam database. Jalankan ProductSeeder terlebih dahulu.\n";
+            return;
+        }
+
+        // Loop untuk membuat 50 data dummy
+        foreach (range(1, 50) as $index) {
+            ProductAttribute::create([
+                'product_id' => $products->random()->id, // Ambil produk secara acak
+                'name' => $faker->randomElement(['Warna', 'Ukuran', 'Berat', 'Material', 'Model']),
+                'value' => $faker->word(), // Nilai random
+            ]);
+        }
     }
 }

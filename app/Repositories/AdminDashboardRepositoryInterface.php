@@ -7,7 +7,12 @@ use Illuminate\Support\Collection;
 interface AdminDashboardRepositoryInterface
 {
     public function getTotalProducts(): int;
-    public function getTransactionsCount($startDate, $endDate, $type): int;
-    public function getStockLevels(): Collection;
-    public function getLatestUserActivities(): Collection;
+    public function getIncomingTransactions(): int;
+    public function getOutgoingTransactions(): int;
+    public function getTotalTransactions(): int;
+    public function getTotalSuppliers(): int;
+    public function getTotalUsers(): int;
+    public function getLowStockCount(): int;
+    public function getLatestUserActivities(int $limit);
+    public function getStockLevels();
 }

@@ -85,7 +85,7 @@
             </tr>
             <tr>
                 <th>Type</th>
-                <td>{{ $stockTransaction->type }}</td>
+                <td>{{ ucfirst($stockTransaction->type) }}</td>  {{-- Capitalize "in" -> "In", "out" -> "Out" --}}
             </tr>
             <tr>
                 <th>Quantity</th>
@@ -93,30 +93,30 @@
             </tr>
             <tr>
                 <th>Date</th>
-                <td>{{ $stockTransaction->date }}</td>
+                <td>{{ \Carbon\Carbon::parse($stockTransaction->date)->format('d M Y') }}</td> {{-- Format tanggal --}}
             </tr>
             <tr>
                 <th>Status</th>
-                <td>{{ $stockTransaction->status }}</td>
+                <td>{{ ucfirst($stockTransaction->status) }}</td> {{-- Capitalize "pending", "completed", "canceled" --}}
             </tr>
             <tr>
                 <th>Notes</th>
-                <td>{{ $stockTransaction->notes }}</td>
+                <td>{{ $stockTransaction->notes ?? 'No notes available' }}</td> {{-- Default jika notes kosong --}}
             </tr>
             <tr>
                 <th>Created At</th>
-                <td>{{ $stockTransaction->created_at }}</td>
+                <td>{{ $stockTransaction->created_at->format('d M Y H:i') }}</td> {{-- Format timestamp --}}
             </tr>
             <tr>
                 <th>Updated At</th>
-                <td>{{ $stockTransaction->updated_at }}</td>
+                <td>{{ $stockTransaction->updated_at->format('d M Y H:i') }}</td>
             </tr>
         </table>
         <a href="{{ route('stock_transactions.edit', $stockTransaction->id) }}">Edit Stock Transaction</a>
         <form action="{{ route('stock_transactions.destroy', $stockTransaction->id) }}" method="POST" style="display:inline-block;">
             @csrf
             @method('DELETE')
-            <button type="submit">Delete Stock Transaction</button>
+            <button type="submit" onclick="return confirm('Are you sure you want to delete this transaction?')">Delete Stock Transaction</button>
         </form>
     </div>
 </body>

@@ -7,6 +7,8 @@ use App\Models\StockTransaction;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Models\Supplier;
+use App\Models\Activity;
 
 class AdminDashboardRepository implements AdminDashboardRepositoryInterface
 {
@@ -15,22 +17,44 @@ class AdminDashboardRepository implements AdminDashboardRepositoryInterface
         return Product::count();
     }
 
-    public function getTransactionsCount($startDate, $endDate, $type): int
+    public function getIncomingTransactions(): int
     {
-        return StockTransaction::where('type', $type)
-            ->whereBetween('date', [$startDate, $endDate])
-            ->count();
+        return StockTransaction::where('type', 'masuk')->count();
     }
 
-    public function getStockLevels(): Collection
+    public function getOutgoingTransactions(): int
     {
-        return DB::table('products')
-            ->select('name', 'stock')
-            ->get();
+        return StockTransaction::where('type', 'keluar')->count();
     }
 
-    public function getLatestUserActivities(): Collection
+    public function getTotalTransactions(): int
     {
-        return User::latest()->limit(10)->get();
+        return StockTransaction::count();
+    }
+
+    public function getTotalSuppliers(): int
+    {
+        return Supplier::count();
+    }
+
+    public function getTotalUsers(): int
+    {
+        return User::count();
+    }
+
+    public function getLowStockCount(): int
+    {
+        return Product::where('current_stock', '<=', 'minimun_stock')->count();
+    }
+
+    public function getLatestUserActivities(int $limit = 5)
+    {
+        return User::latest()->take($limit)->get();
+    }
+
+    public function getStockLevels()
+    {
+        return Product::select('name', 'current_stock')->get();
     }
 }
+

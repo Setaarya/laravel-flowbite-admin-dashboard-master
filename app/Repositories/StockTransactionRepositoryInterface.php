@@ -11,4 +11,6 @@ interface StockTransactionRepositoryInterface
     public function create(array $data);
     public function update(StockTransaction $stockTransaction, array $data);
     public function delete(StockTransaction $stockTransaction);
+    public function getPending();
+    public function updateStatus($id, $status);
 }
