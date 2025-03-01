@@ -14,6 +14,7 @@ use App\Http\Controllers\staff\StaffController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\UserSettingController;
+use App\Http\Controllers\ReportController;
 
 
 /*
@@ -116,6 +117,20 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
         Route::put('/admin/users', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+        Route::get('/admin/reports/index', [ReportController::class, 'index'])->name('admin.reports.index');
+        Route::get('/admin/reports/stock_transaction', [ReportController::class, 'stockindex'])->name('admin.reports.stock_report');
+
+        
+        Route::get('/reports/transactions', [ReportController::class, 'transactionReport']);
+
+        Route::get('/reports/stock/export/excel', [ReportController::class, 'exportStockReportToExcel']);
+        Route::get('/reports/transactions/export/excel', [ReportController::class, 'exportTransactionReportToExcel']);
+
+        Route::get('/reports/stock/export/pdf', [ReportController::class, 'exportStockReportToPDF']);
+        Route::get('/reports/transactions/export/pdf', [ReportController::class, 'exportTransactionReportToPDF']);
+
+        Route::get('/reports/transactions', [ReportController::class, 'transactionReport'])->name('admin.reports.transaction_report');
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {

@@ -58,7 +58,7 @@
                     <td class="py-3 px-4 border">{{ $product->supplier->name }}</td>
                     <td class="py-3 px-4 border">{{ $product->name }}</td>
                     <td class="py-3 px-4 border">{{ $product->sku }}</td>
-                    <td class="py-3 px-4 border">{{ Str::limit($product->description, 50) }}</td> <!-- Batasi panjang deskripsi -->
+                    <td class="py-3 px-4 border">{{ str()->limit($product->description, 50) }}</td>
                     <td class="py-3 px-4 border">Rp {{ number_format($product->purchase_price, 2, ',', '.') }}</td>
                     <td class="py-3 px-4 border">Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
                     

@@ -133,7 +133,13 @@
                 <li><a href="{{ route('admin.users.index') }}" 
                     class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
                     <i class="fas fa-truck"></i> Pengguna</a>
-                </li> 
+                </li>
+                <li>
+                    <a href="{{ route('admin.reports.index') }}" 
+                       class="{{ request()->routeIs('admin.reports.index') ? 'active' : '' }}">
+                       <i class="fas fa-box"></i> Laporan
+                    </a>
+                </li>
             </ul>
         </div>
 
