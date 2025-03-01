@@ -14,10 +14,23 @@
     @endif
 
     <div class="flex justify-between mb-4">
-        <a href="{{ route('products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+        <!-- Tombol Tambah Produk -->
+        <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
             Tambah Produk
         </a>
-    </div>
+    
+        <div class="flex space-x-2">
+            <!-- Tombol Tambah Kategori Baru -->
+            <a href="{{ route('admin.categories.index') }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                Tambah Kategori Baru
+            </a>
+    
+            <!-- Tombol Tambah Atribut Produk -->
+            <a href="{{ route('admin.product_attributes.index') }}" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
+                Tambah Atribut Produk
+            </a>
+        </div>
+    </div>    
 
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">

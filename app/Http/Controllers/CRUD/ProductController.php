@@ -31,7 +31,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $suppliers = Supplier::all();
-        return view('products.create', compact('categories', 'suppliers'));
+        return view('admin.products.create', compact('categories', 'suppliers'));
     }
 
     public function store(Request $request)
@@ -39,21 +39,21 @@ class ProductController extends Controller
         $validatedData = $this->productService->validateProductData($request);
         $this->productService->createProduct($validatedData);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
     public function show(Product $product)
     {
         $attributes = $this->productAttributeService->getAllProductAttributes()->where('product_id', $product->id);
         
-        return view('products.show', compact('product', 'attributes'));
+        return view('admin.products.show', compact('product', 'attributes'));
     }
 
     public function edit(Product $product)
     {
         $categories = Category::all();
         $suppliers = Supplier::all();
-        return view('products.edit', compact('product', 'categories', 'suppliers'));
+        return view('admin.products.edit', compact('product', 'categories', 'suppliers'));
     }
 
     public function update(Request $request, Product $product)
@@ -61,14 +61,14 @@ class ProductController extends Controller
         $validatedData = $this->productService->validateProductData($request);
         $this->productService->updateProduct($product, $validatedData);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
     public function destroy(Product $product)
     {
         $this->productService->deleteProduct($product);
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
 
     public function managerIndex()

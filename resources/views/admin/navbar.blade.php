@@ -129,11 +129,7 @@
                 <li><a href="{{ route('admin.suppliers.index') }}" 
                     class="{{ request()->routeIs('admin.suppliers.index') ? 'active' : '' }}">
                     <i class="fas fa-truck"></i> Supplier</a>
-                </li>
-                <li><a href="{{ route('admin.categories.index') }}" 
-                    class="{{ request()->routeIs('admin.categories.index') ? 'active' : '' }}">
-                    <i class="fas fa-truck"></i> Kategori</a>
-                </li>  
+                </li> 
                 <li><a href="{{ route('admin.users.index') }}" 
                     class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
                     <i class="fas fa-truck"></i> Pengguna</a>
