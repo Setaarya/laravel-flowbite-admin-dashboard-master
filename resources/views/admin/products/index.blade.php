@@ -14,10 +14,17 @@
     @endif
 
     <div class="flex justify-between mb-4">
-        <!-- Tombol Tambah Produk -->
-        <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-            Tambah Produk
-        </a>
+        <div class="flex space-x-2">
+            <!-- Tombol Tambah Produk -->
+            <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                Tambah Produk
+            </a>
+    
+            <!-- Tombol Export Produk -->
+            <a href="{{ route('admin.export.products') }}" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+                Export Produk
+            </a>
+        </div>
     
         <div class="flex space-x-2">
             <!-- Tombol Tambah Kategori Baru -->
@@ -126,3 +133,4 @@
     }
 </script>
 @endsection
+

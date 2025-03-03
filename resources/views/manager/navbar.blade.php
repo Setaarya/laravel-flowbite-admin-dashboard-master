@@ -128,7 +128,12 @@
                 </li>
                 <li><a href="{{ route('manager.suppliers.index') }}" 
                     class="{{ request()->routeIs('manager.suppliers.index') ? 'active' : '' }}">
-                    <i class="fas fa-truck"></i> Supplier</a></li>    
+                    <i class="fas fa-truck"></i> Supplier</a>
+                </li>    
+                <li><a href="{{ route('manager.reports.index') }}" 
+                    class="{{ request()->routeIs('manager.reports.index') ? 'active' : '' }}">
+                    <i class="fas fa-truck"></i> Laporan</a>
+                </li>
             </ul>
         </div>
 

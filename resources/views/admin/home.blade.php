@@ -53,7 +53,7 @@
     
         <!-- Produk Stok Minimum -->
         <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-gray-600 font-semibold">Stok Minimum</h3>
+            <h3 class="text-gray-600 font-semibold">Stok Habis</h3>
             <p class="text-2xl font-bold text-red-600">{{ $data['low_stock'] }}</p>
         </div>
     </div>

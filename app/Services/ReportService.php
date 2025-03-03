@@ -17,4 +17,9 @@ class ReportService
     {
         return $this->repository->getReport($categoryId, $startDate, $endDate);
     }
+
+    public function getReportData($filters = [])
+    {
+        return $this->repository->getFilteredProducts($filters);
+    }
 }

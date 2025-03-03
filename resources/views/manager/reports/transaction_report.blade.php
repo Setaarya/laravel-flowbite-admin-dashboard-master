@@ -1,11 +1,11 @@
-@extends('admin.navbar')
+@extends('manager.navbar')
 
 @section('content')
 <div class="container mx-auto p-6">
     <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Laporan Stok</h2>
 
     <!-- Filter -->
-    <form action="{{ route('admin.reports.transaction_report') }}" method="GET" class="mb-6 flex flex-wrap gap-4 justify-center">
+    <form action="{{ route('manager.reports.transaction_report') }}" method="GET" class="mb-6 flex flex-wrap gap-4 justify-center">
         <select name="category_id" class="border rounded p-2">
             <option value="">-- Pilih Kategori --</option>
             @foreach($categories as $category)

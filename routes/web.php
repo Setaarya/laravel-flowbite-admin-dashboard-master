@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StockOpnameController;
 
 
 /*
@@ -120,17 +121,12 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/admin/reports/index', [ReportController::class, 'index'])->name('admin.reports.index');
         Route::get('/admin/reports/stock_transaction', [ReportController::class, 'stockindex'])->name('admin.reports.stock_report');
-
-        
-        Route::get('/reports/transactions', [ReportController::class, 'transactionReport']);
-
-        Route::get('/reports/stock/export/excel', [ReportController::class, 'exportStockReportToExcel']);
-        Route::get('/reports/transactions/export/excel', [ReportController::class, 'exportTransactionReportToExcel']);
-
-        Route::get('/reports/stock/export/pdf', [ReportController::class, 'exportStockReportToPDF']);
-        Route::get('/reports/transactions/export/pdf', [ReportController::class, 'exportTransactionReportToPDF']);
-
-        Route::get('/reports/transactions', [ReportController::class, 'transactionReport'])->name('admin.reports.transaction_report');
+        Route::get('/admin/reports/stock', [ReportController::class, 'transactionindex'])->name('admin.reports.transaction_report');
+        Route::get('/admin/reports/export/stock_transactions', [ReportController::class, 'exportTransactionReport'])->name('admin.reports.export.transactions');
+        Route::get('/admin/reports/export/products', [ReportController::class, 'exportStockReport'])->name('admin.reports.export.stocks');
+    
+        Route::get('/export-products', [ProductController::class, 'export'])->name('admin.export.products');
+    
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {
@@ -147,6 +143,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/manager/stock_transactions/{stockTransaction}', [StockTransactionController::class, 'managerShow'])->name('manager.stock_transactions.show');
         Route::get('/manager/stock_transactions/{stockTransaction}/edit', [StockTransactionController::class, 'manageredit'])->name('manager.stock_transactions.edit');
         Route::put('/manager/stock_transactions/{stockTransaction}', [StockTransactionController::class, 'managerupdate'])->name('manager.stock_transactions.update');
+
+        Route::get('/manager/reports/index', [ReportController::class, 'managerindex'])->name('manager.reports.index');
+        Route::get('/manager/reports/stock_transaction', [ReportController::class, 'managerstockindex'])->name('manager.reports.stock_report');
+        Route::get('/manager/reports/stock', [ReportController::class, 'managertransactionindex'])->name('manager.reports.transaction_report');
+
+        Route::get('/manager/stock_transactions/stock_opname', [StockOpnameController::class, 'index'])->name('manager.stock_transactions.stock_opname');
+        Route::post('/manager/stock_transactions/stock_opname/update', [StockOpnameController::class, 'updateStock'])->name('manager.stock_transactions.stock_opname.update');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {
