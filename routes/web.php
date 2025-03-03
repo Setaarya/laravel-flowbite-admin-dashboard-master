@@ -16,6 +16,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StockOpnameController;
+use App\Http\Controllers\SettingController;
 
 
 /*
@@ -127,6 +128,8 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/export-products', [ProductController::class, 'export'])->name('admin.export.products');
     
+        Route::get('/admin/settings', [SettingController::class, 'index'])->name('admin.settings.index');
+        Route::post('/admin/settings', [SettingController::class, 'update'])->name('admin.settings.update');
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {
