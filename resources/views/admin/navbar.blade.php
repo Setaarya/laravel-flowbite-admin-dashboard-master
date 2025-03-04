@@ -1,3 +1,8 @@
+@php
+    $settings = \App\Models\Setting::first();
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,7 +112,7 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <div>
-            <div class="sidebar-header">Stockify</div>
+            <div class="sidebar-header">{{ $settings->app_name }}</div>
             <ul>
                 <li>
                     <a href="{{ route('admin_home') }}" class="back-button">
@@ -129,15 +134,29 @@
                 <li><a href="{{ route('admin.suppliers.index') }}" 
                     class="{{ request()->routeIs('admin.suppliers.index') ? 'active' : '' }}">
                     <i class="fas fa-truck"></i> Supplier</a>
-                </li>
-                <li><a href="{{ route('admin.categories.index') }}" 
-                    class="{{ request()->routeIs('admin.categories.index') ? 'active' : '' }}">
-                    <i class="fas fa-truck"></i> Kategori</a>
-                </li>  
+                </li> 
                 <li><a href="{{ route('admin.users.index') }}" 
                     class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
                     <i class="fas fa-truck"></i> Pengguna</a>
-                </li> 
+                </li>
+                <li>
+                    <a href="{{ route('admin.reports.index') }}" 
+                       class="{{ request()->routeIs('admin.reports.index') ? 'active' : '' }}">
+                       <i class="fas fa-box"></i> Laporan
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.stock_opname.index') }}" 
+                       class="{{ request()->routeIs('admin.stock_opname.index') ? 'active' : '' }}">
+                       <i class="fas fa-box"></i> Stok Opname
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.settings.index') }}" 
+                       class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">
+                       <i class="fas fa-box"></i> Pengaturan
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -158,7 +177,7 @@
     </div>
 
     <footer class="bg-gray-800 text-white p-4 mt-8 text-center">
-        <p>&copy; 2025 Stockify. All rights reserved.</p>
+        <p>&copy; 2025 {{ $settings->app_name }}. All rights reserved.</p>
     </footer>
 
     <!-- Flowbite JS -->

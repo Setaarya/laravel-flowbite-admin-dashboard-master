@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Supplier;
-use App\Models\Activity;
+use App\Models\UserActivity;
 
 class AdminDashboardRepository implements AdminDashboardRepositoryInterface
 {
@@ -49,7 +49,7 @@ class AdminDashboardRepository implements AdminDashboardRepositoryInterface
 
     public function getLatestUserActivities(int $limit = 5)
     {
-        return User::latest()->take($limit)->get();
+        return UserActivity::latest()->take($limit)->get();
     }
 
     public function getStockLevels()

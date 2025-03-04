@@ -6,6 +6,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use App\Models\UserActivity;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -23,11 +26,26 @@ class EventServiceProvider extends ServiceProvider
     /**
      * Register any events for your application.
      */
-    public function boot(): void
+    public function boot()
     {
-        //
-    }
+        Event::listen(Login::class, function ($event) {
+            UserActivity::create([
+                'user_id' => $event->user->id,
+                'activity' => 'User logged in',
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ]);
+        });
 
+        Event::listen(Logout::class, function ($event) {
+            UserActivity::create([
+                'user_id' => $event->user->id,
+                'activity' => 'User logged out',
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent(),
+            ]);
+        });
+    }
     /**
      * Determine if events and listeners should be automatically discovered.
      */

@@ -21,6 +21,11 @@ class StockTransactionService implements StockTransactionServiceInterface
         return $this->repository->getAll();
     }
 
+    public function getAllTransactionsSortedByDate()
+    {
+        return $this->repository->getAllSortedByDate();
+    }
+
     public function getTransactionById($id)
     {
         return $this->repository->getById($id);
@@ -89,3 +94,4 @@ class StockTransactionService implements StockTransactionServiceInterface
         ]);
     }
 }
+

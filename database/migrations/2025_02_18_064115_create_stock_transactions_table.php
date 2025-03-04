@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('type', ['masuk', 'keluar']); // Changed to enum
             $table->integer('quantity');
             $table->date('date');
-            $table->enum('status', ['pending', 'received', 'dispatched']); // Changed to enum
+            $table->enum('status', ['pending', 'received', 'dispatched'])->default('pending');
             $table->text('notes')->nullable();
             $table->timestamps();
         });
@@ -32,3 +32,4 @@ return new class extends Migration
         Schema::dropIfExists('stock_transactions');
     }
 };
+?>

@@ -53,7 +53,7 @@
     
         <!-- Produk Stok Minimum -->
         <div class="bg-white shadow-md rounded-lg p-4">
-            <h3 class="text-gray-600 font-semibold">Stok Minimum</h3>
+            <h3 class="text-gray-600 font-semibold">Stok Habis</h3>
             <p class="text-2xl font-bold text-red-600">{{ $data['low_stock'] }}</p>
         </div>
     </div>
@@ -91,7 +91,7 @@
             labels: {!! json_encode($data['stock_levels']->pluck('name')) !!},
             datasets: [{
                 label: 'Stock Levels',
-                data: {!! json_encode($data['stock_levels']->pluck('stock')) !!},
+                data: {!! json_encode($data['stock_levels']->pluck('current_stock')) !!},
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1

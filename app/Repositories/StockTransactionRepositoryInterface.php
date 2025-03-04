@@ -8,6 +8,7 @@ interface StockTransactionRepositoryInterface
 {
     public function getAll();
     public function getById($id);
+    public function getAllSortedByDate();
     public function create(array $data);
     public function update(StockTransaction $stockTransaction, array $data);
     public function delete(StockTransaction $stockTransaction);

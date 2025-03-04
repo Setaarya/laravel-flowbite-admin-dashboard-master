@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        return view('admin.users.create');
     }
 
     public function store(Request $request)
@@ -32,17 +32,17 @@ class UserController extends Controller
         $validatedData = $this->userService->validateUserData($request);
         $this->userService->createUser($validatedData);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        return view('admin.users.show', compact('user'));
     }
 
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
@@ -53,14 +53,14 @@ class UserController extends Controller
         }
         $this->userService->updateUser($user, $validatedData);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
     {
         $this->userService->deleteUser($user);
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }
 
     public function adminindex()

@@ -1,9 +1,14 @@
+@php
+    $settings = \App\Models\Setting::first();
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lupa Password - Stockify</title>
+    <title>Lupa Password - {{ $settings->app_name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">

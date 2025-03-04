@@ -14,10 +14,30 @@
     @endif
 
     <div class="flex justify-between mb-4">
-        <a href="{{ route('products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-            Tambah Produk
-        </a>
-    </div>
+        <div class="flex space-x-2">
+            <!-- Tombol Tambah Produk -->
+            <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                Tambah Produk
+            </a>
+    
+            <!-- Tombol Export Produk -->
+            <a href="{{ route('admin.export.products') }}" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+                Export Produk
+            </a>
+        </div>
+    
+        <div class="flex space-x-2">
+            <!-- Tombol Tambah Kategori Baru -->
+            <a href="{{ route('admin.categories.index') }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                Tambah Kategori Baru
+            </a>
+    
+            <!-- Tombol Tambah Atribut Produk -->
+            <a href="{{ route('admin.product_attributes.index') }}" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
+                Tambah Atribut Produk
+            </a>
+        </div>
+    </div>    
 
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
@@ -45,7 +65,7 @@
                     <td class="py-3 px-4 border">{{ $product->supplier->name }}</td>
                     <td class="py-3 px-4 border">{{ $product->name }}</td>
                     <td class="py-3 px-4 border">{{ $product->sku }}</td>
-                    <td class="py-3 px-4 border">{{ Str::limit($product->description, 50) }}</td> <!-- Batasi panjang deskripsi -->
+                    <td class="py-3 px-4 border">{{ str()->limit($product->description, 50) }}</td>
                     <td class="py-3 px-4 border">Rp {{ number_format($product->purchase_price, 2, ',', '.') }}</td>
                     <td class="py-3 px-4 border">Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
                     
@@ -113,3 +133,4 @@
     }
 </script>
 @endsection
+

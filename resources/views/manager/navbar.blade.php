@@ -1,3 +1,8 @@
+@php
+    $settings = \App\Models\Setting::first();
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,7 +112,7 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <div>
-            <div class="sidebar-header">Stockify</div>
+            <div class="sidebar-header">{{ $settings->app_name }}</div>
             <ul>
                 <li>
                     <a href="{{ route('manager_home') }}" class="back-button">
@@ -128,7 +133,16 @@
                 </li>
                 <li><a href="{{ route('manager.suppliers.index') }}" 
                     class="{{ request()->routeIs('manager.suppliers.index') ? 'active' : '' }}">
-                    <i class="fas fa-truck"></i> Supplier</a></li>    
+                    <i class="fas fa-truck"></i> Supplier</a>
+                </li>    
+                <li><a href="{{ route('manager.reports.index') }}" 
+                    class="{{ request()->routeIs('manager.reports.index') ? 'active' : '' }}">
+                    <i class="fas fa-truck"></i> Laporan</a>
+                </li>
+                <li><a href="{{ route('manager.stock_opname.index') }}" 
+                    class="{{ request()->routeIs('manager.stock_opname.index') ? 'active' : '' }}">
+                    <i class="fas fa-truck"></i> Stok Opname</a>
+                </li>
             </ul>
         </div>
 
@@ -149,7 +163,7 @@
     </div>
 
     <footer class="bg-gray-800 text-white p-4 mt-8 text-center">
-        <p>&copy; 2025 Stockify. All rights reserved.</p>
+        <p>&copy; 2025 {{ $settings->app_name }}. All rights reserved.</p>
     </footer>
 
     <!-- Flowbite JS -->
