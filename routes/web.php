@@ -126,6 +126,9 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/admin/settings', [SettingController::class, 'index'])->name('admin.settings.index');
         Route::post('/admin/settings', [SettingController::class, 'update'])->name('admin.settings.update');
+
+        Route::get('/admin/stock_opname/', [StockOpnameController::class, 'adminindex'])->name('admin.stock_opname.index');
+        Route::get('/manager/export_stock_opname', [StockOpnameController::class, 'exportToExcel'])->name('manager.export.stock.opname');
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {
@@ -148,7 +151,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/manager/reports/stock', [ReportController::class, 'managertransactionindex'])->name('manager.reports.transaction_report');
 
         Route::get('/manager/stock_opname/', [StockOpnameController::class, 'index'])->name('manager.stock_opname.index');
-        Route::get('/manager/export_stock_opname/{format}', [StockOpnameController::class, 'exportStockOpname'])->name('manager.export.stock.opname');
+        Route::get('/manager/export_stock_opname', [StockOpnameController::class, 'exportToExcel'])->name('manager.export.stock.opname');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {

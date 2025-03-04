@@ -146,6 +146,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.stock_opname.index') }}" 
+                       class="{{ request()->routeIs('admin.stock_opname.index') ? 'active' : '' }}">
+                       <i class="fas fa-box"></i> Stok Opname
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.settings.index') }}" 
                        class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">
                        <i class="fas fa-box"></i> Pengaturan

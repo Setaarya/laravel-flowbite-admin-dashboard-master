@@ -1,4 +1,4 @@
-@extends('manager.navbar')
+@extends('admin.navbar')
 
 @section('title', 'Stock Opname')
 

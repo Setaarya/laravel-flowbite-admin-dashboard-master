@@ -91,7 +91,7 @@
             labels: {!! json_encode($data['stock_levels']->pluck('name')) !!},
             datasets: [{
                 label: 'Stock Levels',
-                data: {!! json_encode($data['stock_levels']->pluck('stock')) !!},
+                data: {!! json_encode($data['stock_levels']->pluck('current_stock')) !!},
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1

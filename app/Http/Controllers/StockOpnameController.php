@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Services\StockOpnameServiceInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Http\Response;
 
@@ -25,6 +24,12 @@ class StockOpnameController extends Controller
         return view('manager.stock_opname.index', compact('stockData'));
     }
 
+    public function adminindex()
+    {
+        $stockData = $this->stockOpnameService->getStockOpnameData();
+        return view('admin.stock_opname.index', compact('stockData'));
+    }
+
     public function update(Request $request)
     {
         $request->validate([
@@ -37,50 +42,45 @@ class StockOpnameController extends Controller
         return redirect()->back()->with('status', "Stock updated. Difference: $difference");
     }
 
-    public function exportStockOpname($format = 'xlsx')
+    public function exportToExcel()
     {
-        // Ambil data dari database
-        $stockData = \App\Models\Product::select('name', 'category', 'sku', 'current_stock', 'minimum_stock')->get();
+        // Ambil semua data dari tabel Stock Opname
+        $stockData = $this->stockOpnameService->getStockOpnameData();
 
         // Buat Spreadsheet baru
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // Header Kolom
-        $headers = ["Product", "Category", "SKU", "Current Stock", "Minimum Stock"];
-        $sheet->fromArray([$headers], null, 'A1');
+        // Header kolom
+        $headers = ['Product', 'Category', 'SKU', 'Current Stock', 'Minimum Stock', 'Manual Count', 'Status'];
+        $sheet->fromArray($headers, null, 'A1');
 
-        // Tambahkan Data ke Spreadsheet
-        $rowIndex = 2;
+        // Isi data dari database ke dalam sheet
+        $row = 2;
         foreach ($stockData as $stock) {
             $sheet->fromArray([
                 $stock->name,
-                $stock->category,
+                $stock->category_id,
                 $stock->sku,
                 $stock->current_stock,
                 $stock->minimum_stock,
-            ], null, "A$rowIndex");
-            $rowIndex++;
+                '', // Manual count (kosong karena input di UI)
+                'Balanced (0)' // Status default
+            ], null, "A{$row}");
+            $row++;
         }
 
-        // Atur Nama File
-        $fileName = 'stock_opname.' . $format;
+        // Set header response
+        $fileName = 'Stock_Opname_' . date('Y-m-d') . '.xlsx';
+        $writer = new Xlsx($spreadsheet);
+        $contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-        // Buat Writer Sesuai Format
-        if ($format === 'csv') {
-            $writer = new Csv($spreadsheet);
-            $contentType = 'text/csv';
-        } else {
-            $writer = new Xlsx($spreadsheet);
-            $contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        }
-
-        // Simpan Output ke StreamedResponse
         return new StreamedResponse(function () use ($writer) {
             $writer->save('php://output');
         }, 200, [
             'Content-Type' => $contentType,
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            'Content-Disposition' => 'attachment;filename="' . $fileName . '"',
+            'Cache-Control' => 'max-age=0',
         ]);
     }
 }
