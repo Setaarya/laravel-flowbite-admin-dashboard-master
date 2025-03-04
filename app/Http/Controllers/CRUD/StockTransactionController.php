@@ -112,19 +112,19 @@ class StockTransactionController extends Controller
             return redirect()->route('admin.home')->with('error', 'Unauthorized.');
         }
 
-        $transactions = $this->stockTransactionService->getAllTransactions();
+        $transactions = $this->stockTransactionService->getAllTransactionsSortedByDate();
         return view('admin.stock_transactions.index', compact('transactions'));
     }
 
     public function staffindex()
     {
-        $transactions = $this->stockTransactionService->getAllTransactions()->last()->get();
+        $transactions = $this->stockTransactionService->getAllTransactionsSortedByDate();
         return view('staff.stock_transactions.index', compact('transactions'));
     }
 
     public function managerindex()
     {
-        $transactions = $this->stockTransactionService->getAllTransactions()->last()->get();
+        $transactions = $this->stockTransactionService->getAllTransactionsSortedByDate();
         return view('manager.stock_transactions.index', compact('transactions'));
     }
 

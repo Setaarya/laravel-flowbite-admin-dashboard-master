@@ -25,6 +25,10 @@ use App\Services\StockTransactionService;
 use App\Services\StockTransactionServiceInterface;
 use App\Repositories\StockTransactionRepository;
 use App\Repositories\StockTransactionRepositoryInterface;
+use App\Repositories\StockOpnameRepository;
+use App\Repositories\StockOpnameRepositoryInterface;
+use App\Services\StockOpnameService;
+use App\Services\StockOpnameServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +49,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app->bind(ProductAttributeRepositoryInterface::class, ProductAttributeRepository::class);
             $this->app->bind(StockTransactionRepositoryInterface::class, StockTransactionRepository::class);
             $this->app->bind(StockTransactionServiceInterface::class, StockTransactionService::class);
+            $this->app->bind(StockOpnameRepositoryInterface::class, StockOpnameRepository::class);
+            $this->app->bind(StockOpnameServiceInterface::class, StockOpnameService::class);
         }
         
 
@@ -57,6 +63,4 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
-
 }

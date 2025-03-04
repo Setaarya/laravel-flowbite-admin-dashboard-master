@@ -31,8 +31,8 @@
         <div class="mb-4">
             <label class="block text-gray-700 font-medium">Jenis Transaksi:</label>
             <select name="type" id="type" class="w-full p-2 border border-gray-300 rounded" required>
-                <option value="in">Masuk</option>
-                <option value="out">Keluar</option>
+                <option value="masuk">Masuk</option>
+                <option value="keluar">Keluar</option>
             </select>
             @error('type') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>

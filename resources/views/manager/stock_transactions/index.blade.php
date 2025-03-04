@@ -11,10 +11,6 @@
            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md">
             Create New Stock Transaction
         </a>
-        <a href="{{ route('manager.stock_transactions.stock_opname') }}" 
-           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md">
-            Create Stock Opname
-        </a>
     </div>
 
     <div class="overflow-x-auto">

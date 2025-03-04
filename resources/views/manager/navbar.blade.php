@@ -139,6 +139,10 @@
                     class="{{ request()->routeIs('manager.reports.index') ? 'active' : '' }}">
                     <i class="fas fa-truck"></i> Laporan</a>
                 </li>
+                <li><a href="{{ route('manager.stock_opname.index') }}" 
+                    class="{{ request()->routeIs('manager.stock_opname.index') ? 'active' : '' }}">
+                    <i class="fas fa-truck"></i> Stok Opname</a>
+                </li>
             </ul>
         </div>
 

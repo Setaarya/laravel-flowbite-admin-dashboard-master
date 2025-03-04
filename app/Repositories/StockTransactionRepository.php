@@ -3,12 +3,20 @@
 namespace App\Repositories;
 
 use App\Models\StockTransaction;
+use Illuminate\Support\Facades\DB;
+
+
 
 class StockTransactionRepository implements StockTransactionRepositoryInterface
 {
     public function getAll()
     {
         return StockTransaction::with('product', 'user')->get();
+    }
+
+    public function getAllSortedByDate()
+    {
+        return StockTransaction::with('product', 'user')->orderBy('date', 'desc')->get();
     }
 
     public function getById($id)

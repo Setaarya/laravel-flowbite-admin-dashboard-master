@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CRUD\UserController;
 use App\Http\Controllers\CRUD\SupplierController;
@@ -30,7 +31,6 @@ use App\Http\Controllers\SettingController;
 |
 */
 Route::get('/', [LandingPageController::class, 'index'])->name('index');
-Route::get('/admin/home', [DashboardController::class, 'index'])->name('index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
@@ -56,14 +56,10 @@ Route::resource('stock_transactions', StockTransactionController::class);
 /////////////////////////////////////////////////////////////
 
 
-Route::get('/settings', [UserSettingController::class, 'index'])->name('settings.index');
-Route::post('/settings/update', [UserSettingController::class, 'update'])->name('settings.update');
-
-
 // Authentication routes
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('loginform');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('registerform');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
 Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
@@ -151,8 +147,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/manager/reports/stock_transaction', [ReportController::class, 'managerstockindex'])->name('manager.reports.stock_report');
         Route::get('/manager/reports/stock', [ReportController::class, 'managertransactionindex'])->name('manager.reports.transaction_report');
 
-        Route::get('/manager/stock_transactions/stock_opname', [StockOpnameController::class, 'index'])->name('manager.stock_transactions.stock_opname');
-        Route::post('/manager/stock_transactions/stock_opname/update', [StockOpnameController::class, 'updateStock'])->name('manager.stock_transactions.stock_opname.update');
+        Route::get('/manager/stock_opname/', [StockOpnameController::class, 'index'])->name('manager.stock_opname.index');
+        Route::get('/manager/export_stock_opname/{format}', [StockOpnameController::class, 'exportStockOpname'])->name('manager.export.stock.opname');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {
@@ -163,5 +159,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/staff/stock_transactions/index', [StockTransactionController::class, 'staffIndex'])->name('stock_transactions.staff_index');
     });
 });
+
+
+
+
+
+Route::post('/stock-opname/update', [StockOpnameController::class, 'update'])->name('stock_opname.update');
 
 ?>

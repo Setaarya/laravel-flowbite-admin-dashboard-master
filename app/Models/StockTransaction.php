@@ -64,15 +64,5 @@ class StockTransaction extends Model
                 return ucfirst($this->status);
         }
     }
-
-    public static function getStockSummary()
-    {
-        return self::selectRaw('product_id, 
-                SUM(CASE WHEN type = "masuk" THEN quantity ELSE 0 END) as total_in,
-                SUM(CASE WHEN type = "keluar" THEN quantity ELSE 0 END) as total_out')
-            ->groupBy('product_id')
-            ->with('product')
-            ->get();
-    }
 }
 
