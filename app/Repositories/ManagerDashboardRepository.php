@@ -10,7 +10,7 @@ class ManagerDashboardRepository
 {
     public function getLowStockProducts()
     {
-        return Product::where('current_stock', '<', 'minimum_stock')->get();
+        return Product::where('current_stock', '<=', 'minimum_stock')->get();
     }
 
     public function getIncomingStockToday()

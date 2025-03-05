@@ -21,10 +21,18 @@
             <select name="product_id" id="product_id" class="w-full p-2 border border-gray-300 rounded" required>
                 <option value="" disabled selected>-- Pilih Produk --</option>
                 @foreach($products as $product)
-                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                    <option value="{{ $product->id }}" data-stock="{{ $product->current_stock }}">
+                        {{ $product->name }}
+                    </option>
                 @endforeach
             </select>
             @error('product_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        </div>
+
+        <!-- Current Stock Display -->
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Stok Saat Ini:</label>
+            <p id="current_stock" class="text-lg font-bold text-blue-500">-</p>
         </div>
 
         <!-- Type Selection -->
@@ -64,4 +72,18 @@
         </button>
     </form>
 </div>
+
+<!-- JavaScript for Current Stock Update -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let productSelect = document.getElementById("product_id");
+    let stockDisplay = document.getElementById("current_stock");
+
+    productSelect.addEventListener("change", function () {
+        let selectedOption = this.options[this.selectedIndex];
+        let stock = selectedOption.getAttribute("data-stock") || "-";
+        stockDisplay.textContent = stock;
+    });
+});
+</script>
 @endsection
