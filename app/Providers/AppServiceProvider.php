@@ -29,6 +29,10 @@ use App\Repositories\StockOpnameRepository;
 use App\Repositories\StockOpnameRepositoryInterface;
 use App\Services\StockOpnameService;
 use App\Services\StockOpnameServiceInterface;
+use App\Models\StockTransaction;
+use App\Observers\StockTransactionObserver;
+use App\Models\Product;
+use App\Observers\ProductObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -61,6 +65,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        StockTransaction::observe(StockTransactionObserver::class);
+        Product::observe(ProductObserver::class);
     }
 }

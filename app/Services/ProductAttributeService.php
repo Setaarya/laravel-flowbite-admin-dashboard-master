@@ -22,6 +22,7 @@ class ProductAttributeService
 
     public function createProductAttribute(array $data)
     {
+        
         return $this->productAttributeRepository->create($data);
     }
 

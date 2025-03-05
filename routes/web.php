@@ -127,8 +127,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/settings', [SettingController::class, 'index'])->name('admin.settings.index');
         Route::post('/admin/settings', [SettingController::class, 'update'])->name('admin.settings.update');
 
-        Route::get('/admin/stock_opname/', [StockOpnameController::class, 'adminindex'])->name('admin.stock_opname.index');
-        Route::get('/manager/export_stock_opname', [StockOpnameController::class, 'exportToExcel'])->name('manager.export.stock.opname');
+        Route::get('/admin/stock_opname/export', [StockOpnameController::class, 'exportStockOpname'])->name('admin.stock_opname.export');
+        Route::get('/admin/stock_opname', [StockOpnameController::class, 'showLatestStockOpname'])->name('admin.stock_opname.index');
+        Route::post('/admin/stock_opname/adjust/{id}', [StockOpnameController::class, 'adjustStock']);
     });
 
     Route::middleware(['role:Manajer Gudang'])->group(function () {
@@ -151,7 +152,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/manager/reports/stock', [ReportController::class, 'managertransactionindex'])->name('manager.reports.transaction_report');
 
         Route::get('/manager/stock_opname/', [StockOpnameController::class, 'index'])->name('manager.stock_opname.index');
+        Route::post('/manager/stock_opname/update/{id}', [StockOpnameController::class, 'updateManualCount'])->name('manager.stock.opname.update');
         Route::get('/manager/export_stock_opname', [StockOpnameController::class, 'exportToExcel'])->name('manager.export.stock.opname');
+        Route::post('/manager/stock-opname/save', [StockOpnameController::class, 'saveStockOpname'])->name('manager.stock.opname.save');
     });
 
     Route::middleware(['role:Staff Gudang'])->group(function () {
