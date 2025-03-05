@@ -31,7 +31,6 @@ use App\Http\Controllers\SettingController;
 |
 */
 Route::get('/', [LandingPageController::class, 'index'])->name('index');
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 /////////////////////////////////////////////
@@ -76,21 +75,21 @@ Route::middleware(['auth'])->group(function () {
         
         Route::get('/admin/products/index', [ProductController::class, 'adminIndex'])->name('admin.products.index');
         Route::get('/admin/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-        Route::get('/admin/products/', [ProductController::class, 'show'])->name('admin.products.show');
-        Route::get('/admin/products/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+        Route::get('/admin/products/{product}', [ProductController::class, 'show'])->name('admin.products.show');
+        Route::get('/admin/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
         Route::post('/admin/products', [ProductController::class, 'store'])->name('admin.products.store');
-        Route::put('/admin/products', [ProductController::class, 'update'])->name('admin.products.update');
-        Route::delete('/', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+        Route::put('/admin/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+        Route::delete('/admin/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
         Route::get('/admin/stock_transactions/index', [StockTransactionController::class, 'Indexadmin'])->name('admin.stock_transactions.index');
         
         Route::get('/admin/categories', [CategoryController::class, 'adminindex'])->name('admin.categories.index'); 
         Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
-        Route::get('/admin/categories/{id}', [CategoryController::class, 'show'])->name('admin.categories.show');
-        Route::get('/admin/categories/{id}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+        Route::get('/admin/categories/{category}', [CategoryController::class, 'show'])->name('admin.categories.show');
+        Route::get('/admin/categories/{category}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
         Route::post('/admin/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
-        Route::put('/admin/categories/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
-        Route::delete('/admin/categories/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+        Route::put('/admin/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
         Route::get('/admin/suppliers/index', [SupplierController::class, 'adminindex'])->name('admin.suppliers.index');
         Route::get('/admin/suppliers/create', [SupplierController::class, 'admincreate'])->name('admin.suppliers.create');
@@ -102,11 +101,11 @@ Route::middleware(['auth'])->group(function () {
         
         Route::get('/admin/product_attributes', [ProductAttributeController::class, 'index'])->name('admin.product_attributes.index'); 
         Route::get('/admin/product_attributes/create', [ProductAttributeController::class, 'create'])->name('admin.product_attributes.create');
-        Route::get('/admin/product_attributes/{id}', [ProductAttributeController::class, 'show'])->name('admin.product_attributes.show');
-        Route::get('/admin/product_attributes/{id}/edit', [ProductAttributeController::class, 'edit'])->name('admin.product_attributes.edit');
+        Route::get('/admin/product_attributes/{productAttribute}', [ProductAttributeController::class, 'show'])->name('admin.product_attributes.show');
+        Route::get('/admin/product_attributes/{productAttribute}/edit', [ProductAttributeController::class, 'edit'])->name('admin.product_attributes.edit');
         Route::post('/admin/product_attributes', [ProductAttributeController::class, 'store'])->name('admin.product_attributes.store');
-        Route::put('/admin/product_attributes/{id}', [ProductAttributeController::class, 'update'])->name('admin.product_attributes.update');
-        Route::delete('/admin/product_attributes/{id}', [ProductAttributeController::class, 'destroy'])->name('admin.product_attributes.destroy');        
+        Route::put('/admin/product_attributes/{productAttribute}', [ProductAttributeController::class, 'update'])->name('admin.product_attributes.update');
+        Route::delete('/admin/product_attributes/{productAttribute}', [ProductAttributeController::class, 'destroy'])->name('admin.product_attributes.destroy');        
         
         Route::get('/admin/users/index', [UserController::class, 'adminindex'])->name('admin.users.index');
         Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
@@ -165,11 +164,4 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/staff/stock_transactions/index', [StockTransactionController::class, 'staffIndex'])->name('stock_transactions.staff_index');
     });
 });
-
-
-
-
-
-Route::post('/stock-opname/update', [StockOpnameController::class, 'update'])->name('stock_opname.update');
-
 ?>

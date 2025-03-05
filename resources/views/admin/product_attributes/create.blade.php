@@ -28,13 +28,13 @@
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">Nama Atribut:</label>
-                <input type="text" name="attribute_name" 
+                <input type="text" name="name" 
                     class="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300" required>
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2">Nilai:</label>
-                <input type="text" name="attribute_value" 
+                <input type="text" name="value" 
                     class="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300" required>
             </div>
 

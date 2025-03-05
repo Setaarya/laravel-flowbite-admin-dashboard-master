@@ -60,7 +60,7 @@ class SupplierService
     /**
      * Validasi data supplier.
      */
-    public function validateSupplierData(Request $request, ?int $supplierId = null)
+    public function validateSupplierData(Request $request)
     {
         return $request->validate([
             'name' => 'required|string|max:255',
