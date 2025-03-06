@@ -9,8 +9,8 @@
 
         <!-- Gambar Produk -->
         <div class="flex justify-center mb-4">
-            @if (!empty($product->image) && file_exists(public_path('storage/' . $product->image)))
-                <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-64 h-64 object-cover rounded-lg">
+            @if (!empty($product->image) && file_exists(public_path('storage/products/' . $product->image)))
+                <img src="{{ asset('storage/products/' . $product->image) }}" alt="Product Image" class="w-64 h-64 object-cover rounded-lg">
             @else
                 <img src="{{ asset('images/default-product.png') }}" alt="Default Image" class="w-64 h-64 object-cover rounded-lg">
             @endif

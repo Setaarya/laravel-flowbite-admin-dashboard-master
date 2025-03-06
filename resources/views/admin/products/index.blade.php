@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('admin.navbar')
 
 @section('title', 'Daftar Produk')
@@ -15,24 +18,17 @@
 
     <div class="flex justify-between mb-4">
         <div class="flex space-x-2">
-            <!-- Tombol Tambah Produk -->
             <a href="{{ route('admin.products.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                 Tambah Produk
             </a>
-    
-            <!-- Tombol Export Produk -->
             <a href="{{ route('admin.export.products') }}" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
                 Export Produk
             </a>
         </div>
-    
         <div class="flex space-x-2">
-            <!-- Tombol Tambah Kategori Baru -->
             <a href="{{ route('admin.categories.index') }}" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
                 Tambah Kategori Baru
             </a>
-    
-            <!-- Tombol Tambah Atribut Produk -->
             <a href="{{ route('admin.product_attributes.index') }}" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
                 Tambah Atribut Produk
             </a>
@@ -71,7 +67,7 @@
                     
                     <td class="px-4 py-2 border text-center">
                         @if ($product->image)
-                            <button onclick="showImage('{{ asset('storage/' . $product->image) }}')" 
+                            <button onclick="showImage('{{ Storage::url($product->image) }}')" 
                                     class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
                                 Lihat Gambar
                             </button>
@@ -83,19 +79,14 @@
                     <td class="px-4 py-2 border">{{ $product->current_stock }}</td>
                     <td class="py-3 px-4 border">{{ $product->minimum_stock }}</td>
                     <td class="py-3 px-4 border flex space-x-2">
-                        <!-- Tombol Show -->
                         <a href="{{ route('products.show', $product->id) }}"
                             class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
                             Show
                         </a>
-
-                        <!-- Tombol Edit -->
                         <a href="{{ route('products.edit', $product->id) }}"
                             class="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
                             Edit
                         </a>
-
-                        <!-- Tombol Delete -->
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST"
                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
                             @csrf
@@ -113,12 +104,15 @@
     </div>
 </div>
 
-
-<!-- Modal untuk menampilkan gambar -->
-<div id="imageModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center">
-    <div class="bg-white p-4 rounded-lg shadow-lg">
-        <button onclick="closeImage()" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded">X</button>
-        <img id="modalImage" src="" class="max-w-lg max-h-screen rounded">
+<!-- Modal untuk menampilkan gambar fullscreen -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 hidden flex items-center justify-center">
+    <div class="relative w-screen h-screen flex items-center justify-center">
+        <!-- Tombol Close -->
+        <button onclick="closeImage()" class="absolute top-4 right-4 bg-red-600 text-white px-4 py-2 rounded-full text-lg">
+            X
+        </button>
+        <!-- Gambar yang ditampilkan fullscreen -->
+        <img id="modalImage" src="" class="max-w-full max-h-full object-contain">
     </div>
 </div>
 
@@ -131,6 +125,12 @@
     function closeImage() {
         document.getElementById('imageModal').classList.add('hidden');
     }
+
+    // Menutup modal jika klik di luar gambar
+    document.getElementById('imageModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeImage();
+        }
+    });
 </script>
 @endsection
-

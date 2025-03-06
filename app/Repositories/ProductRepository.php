@@ -30,10 +30,13 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function update(Product $product, array $data)
     {
-        // Jika ada gambar baru, hapus gambar lama dan simpan yang baru
         if (isset($data['image'])) {
-            $this->deleteImage($product->image);
-            $data['image'] = $this->uploadImage($data['image']);
+            $newImagePath = $this->uploadImage($data['image']);
+
+            if ($newImagePath) {
+                $this->deleteImage($product->image);
+                $data['image'] = $newImagePath;
+            }
         }
 
         return $product->update($data);
@@ -55,7 +58,9 @@ class ProductRepository implements ProductRepositoryInterface
      */
     private function uploadImage($image)
     {
-        return $image->store('products', 'public');
+        Storage::disk('public')->makeDirectory('products'); // Pastikan folder ada
+        $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        return $image->storeAs('products', $filename, 'public');
     }
 
     /**
@@ -63,7 +68,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     private function deleteImage($imagePath)
     {
-        if ($imagePath && Storage::disk('public')->exists($imagePath)) {
+        if (!empty($imagePath) && Storage::disk('public')->exists($imagePath)) {
             Storage::disk('public')->delete($imagePath);
         }
     }

@@ -1,5 +1,6 @@
 @php
     $settings = \App\Models\Setting::first();
+    use Illuminate\Support\Facades\Storage;
 @endphp
 
 
@@ -29,11 +30,23 @@
         }
 
         .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             font-size: 1.5rem;
             font-weight: bold;
             padding-bottom: 1rem;
             border-bottom: 1px solid #374151;
+            gap: 10px;
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
         .sidebar ul {
@@ -41,10 +54,6 @@
             padding: 0;
             margin: 0;
             flex-grow: 1;
-        }
-
-        .sidebar li {
-            margin: 0;
         }
 
         .sidebar a {
@@ -112,7 +121,12 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <div>
-            <div class="sidebar-header">{{ $settings->app_name }}</div>
+            <div class="sidebar-header">
+                @if($settings->app_logo)
+                    <img src="{{ Storage::url($settings->app_logo) }}" class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md">
+                @endif
+                <span>{{ $settings->app_name }}</span>
+            </div>
             <ul>
                 <li>
                     <a href="{{ route('manager_home') }}" class="back-button">

@@ -70,6 +70,11 @@
         <input type="file" name="image" accept="image/*" class="w-full border p-2 rounded">
         @error('image') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
 
+        <!-- Current Stock -->
+        <label class="block font-medium mt-3">Current Stock:</label>
+        <input type="number" name="current_stock" value="{{ old('current_stock', 0) }}" required class="w-full border p-2 rounded">
+        @error('current_stock') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+
         <!-- Minimum Stock -->
         <label class="block font-medium mt-3">Minimum Stock:</label>
         <input type="number" name="minimum_stock" value="{{ old('minimum_stock') }}" required class="w-full border p-2 rounded">

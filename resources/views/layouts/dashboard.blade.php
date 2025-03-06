@@ -1,5 +1,6 @@
 @php
     $settings = \App\Models\Setting::first();
+    use Illuminate\Support\Facades\Storage;
 @endphp
 
 <!DOCTYPE html>
@@ -16,7 +17,8 @@
             <!-- Bagian Logo & Nama Aplikasi -->
             <div class="flex items-center space-x-4">
                 @if($settings->app_logo)
-                    <img src="{{ asset('storage/' . $settings->app_logo) }}" class="h-12">
+                    <img src="{{ Storage::url($settings->app_logo) }}" 
+                        class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md">
                 @endif
                 <h1 class="text-3xl font-bold">{{ $settings->app_name }}</h1>
             </div>

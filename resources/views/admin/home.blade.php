@@ -65,17 +65,20 @@
             <canvas id="stockLevelsChart"></canvas>
         </div>
 
-        <!-- Aktivitas Pengguna Terbaru -->
-        <div class="p-4 bg-white rounded-lg shadow-lg">
+         <!-- Aktivitas Pengguna Terbaru -->
+         <div class="p-4 bg-white rounded-lg shadow-lg">
             <h3 class="mb-4 text-lg font-semibold text-gray-600">Aktivitas Pengguna Terbaru</h3>
             <ul class="space-y-2">
                 @forelse ($data['latest_user_activities'] as $activity)
                     <li class="p-4 bg-gray-100 rounded-lg shadow-sm">
-                        <span class="font-semibold">{{ $activity->name }}</span> - 
+                        <span class="font-semibold">{{ $activity->user->name ?? 'Unknown User' }}</span> - 
+                        <span>{{ $activity->activity }}</span> - 
                         <span class="text-gray-500 text-sm">{{ $activity->created_at->format('d M Y, H:i') }}</span>
                     </li>
                 @empty
-                    <li class="p-4 bg-gray-100 rounded-lg shadow-sm text-gray-500">Tidak ada aktivitas terbaru.</li>
+                    <li class="p-4 bg-gray-100 rounded-lg shadow-sm text-gray-500">
+                        Tidak ada aktivitas terbaru.
+                    </li>
                 @endforelse
             </ul>
         </div>

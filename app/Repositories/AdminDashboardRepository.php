@@ -47,9 +47,11 @@ class AdminDashboardRepository implements AdminDashboardRepositoryInterface
         return Product::where('current_stock', '<=', 'minimun_stock')->count();
     }
 
-    public function getLatestUserActivities(int $limit = 5)
+    public function getLatestUserActivities(int $limit = 10)
     {
-        return UserActivity::latest()->take($limit)->get();
+        return UserActivity::with('user') // Pastikan relasi user dimuat
+        ->latest() // Ambil data terbaru duluan
+        ->paginate($limit); // Gunakan parameter limit untuk paginasi
     }
 
     public function getStockLevels()
