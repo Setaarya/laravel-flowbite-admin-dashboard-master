@@ -1,7 +1,7 @@
 @php
     $settings = \App\Models\Setting::first();
+    use Illuminate\Support\Facades\Storage;
 @endphp
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,11 +29,23 @@
         }
 
         .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
             font-size: 1.5rem;
             font-weight: bold;
             padding-bottom: 1rem;
             border-bottom: 1px solid #374151;
+            gap: 10px;
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
         .sidebar ul {
@@ -41,10 +53,6 @@
             padding: 0;
             margin: 0;
             flex-grow: 1;
-        }
-
-        .sidebar li {
-            margin: 0;
         }
 
         .sidebar a {
@@ -112,7 +120,12 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <div>
-            <div class="sidebar-header">{{ $settings->app_name }}</div>
+            <div class="sidebar-header">
+                @if($settings->app_logo)
+                    <img src="{{ Storage::url($settings->app_logo) }}" class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md">
+                @endif
+                <span>{{ $settings->app_name }}</span>
+            </div>
             <ul>
                 <li>
                     <a href="{{ route('admin_home') }}" class="back-button">
@@ -137,24 +150,24 @@
                 </li> 
                 <li><a href="{{ route('admin.users.index') }}" 
                     class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
-                    <i class="fas fa-truck"></i> Pengguna</a>
+                    <i class="fas fa-user"></i> Pengguna</a>
                 </li>
                 <li>
                     <a href="{{ route('admin.reports.index') }}" 
                        class="{{ request()->routeIs('admin.reports.index') ? 'active' : '' }}">
-                       <i class="fas fa-box"></i> Laporan
+                       <i class="fas fa-file-alt"></i> Laporan
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.stock_opname.index') }}" 
                        class="{{ request()->routeIs('admin.stock_opname.index') ? 'active' : '' }}">
-                       <i class="fas fa-box"></i> Stok Opname
+                       <i class="fas fa-clipboard-list"></i> Stok Opname
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.settings.index') }}" 
                        class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">
-                       <i class="fas fa-box"></i> Pengaturan
+                       <i class="fas fa-cogs"></i> Pengaturan
                     </a>
                 </li>
             </ul>

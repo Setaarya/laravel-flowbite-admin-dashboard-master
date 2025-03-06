@@ -37,7 +37,7 @@
                     <td class="py-3 px-4 border">Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
                     <td class="py-3 px-4 border text-center">
                         @if ($product->image)
-                            <button onclick="showImage('{{ asset('storage/' . $product->image) }}')" 
+                            <button onclick="showImage('{{ asset('storage/product/' . $product->image) }}')" 
                                     class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
                                 Lihat Gambar
                             </button>

@@ -1,3 +1,8 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
+
 @extends('admin.navbar')
 
 @section('content')
@@ -22,7 +27,7 @@
             <label for="app_logo" class="block font-medium">Logo Aplikasi</label>
             <input type="file" id="app_logo" name="app_logo" class="w-full border-gray-300 rounded-md p-2 mt-1">
             @if($settings->app_logo)
-                <img src="{{ asset('storage/' . $settings->app_logo) }}" class="mt-3 h-16">
+                <img src="{{ Storage::url($settings->app_logo) }}" class="mt-3 h-16">
             @endif
         </div>
 
