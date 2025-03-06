@@ -14,7 +14,7 @@ use App\Http\Controllers\manager\ManajerController;
 use App\Http\Controllers\staff\StaffController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\UserSettingController;
+use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\SettingController;
@@ -120,7 +120,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/reports/stock', [ReportController::class, 'transactionindex'])->name('admin.reports.transaction_report');
         Route::get('/admin/reports/export/stock_transactions', [ReportController::class, 'exportTransactionReport'])->name('admin.reports.export.transactions');
         Route::get('/admin/reports/export/products', [ReportController::class, 'exportStockReport'])->name('admin.reports.export.stocks');
-    
+        
+        Route::get('/admin/reports/user_activities', [UserActivityController::class, 'index'])->name('admin.reports.user_activities');
+
         Route::get('/export-products', [ProductController::class, 'export'])->name('admin.export.products');
     
         Route::get('/admin/settings', [SettingController::class, 'index'])->name('admin.settings.index');

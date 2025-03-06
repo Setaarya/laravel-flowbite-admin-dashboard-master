@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
 use App\Models\UserActivity;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\StockTransaction;
+use App\Models\ProductAttribute;
+use App\Models\Setting;
+use App\Models\StockOpname;
+use App\Models\Supplier;
+use App\Observers\UserActivityObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -45,6 +53,14 @@ class EventServiceProvider extends ServiceProvider
                 'user_agent' => request()->userAgent(),
             ]);
         });
+
+        Category::observe(UserActivityObserver::class);
+        Product::observe(UserActivityObserver::class);
+        StockTransaction::observe(UserActivityObserver::class);
+        ProductAttribute::observe(UserActivityObserver::class);
+        Supplier::observe(UserActivityObserver::class);
+        Setting::observe(UserActivityObserver::class);
+        StockOpname::observe(UserActivityObserver::class);
     }
     /**
      * Determine if events and listeners should be automatically discovered.
