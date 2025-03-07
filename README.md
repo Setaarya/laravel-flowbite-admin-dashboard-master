@@ -59,34 +59,27 @@ composer install
 npm install
 ```
 
-### 3️⃣ Konfigurasi Environment
-Salin file `.env.example` menjadi `.env` lalu sesuaikan konfigurasi database.
-```bash
-cp .env.example .env
-```
-Edit `.env` dan sesuaikan dengan koneksi database Anda.
-
-### 4️⃣ Generate App Key
+### 3️⃣ Generate App Key
 ```bash
 php artisan key:generate
 ```
 
-### 5️⃣ Jalankan Migrasi dan Seeder
+### 4️⃣ Jalankan Migrasi dan Seeder
 ```bash
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 Seeder akan membuat user default:
 - **Admin** → `admin@example.com` / `password123`
 - **Manajer Gudang** → `manager@example.com` / `password123`
 - **Staff Gudang** → `staff@example.com` / `password123`
 
-### 6️⃣ Install PhpSpreadsheet
+### 5️⃣Install PhpSpreadsheet
 Stockify menggunakan PhpSpreadsheet untuk ekspor laporan ke Excel. Install dengan perintah berikut:
 ```bash
 composer require phpoffice/phpspreadsheet
 ```
 
-### 7️⃣ Jalankan Aplikasi
+### 6️⃣Jalankan Aplikasi
 ```bash
 php artisan serve
 ```
