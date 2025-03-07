@@ -80,7 +80,13 @@ Seeder akan membuat user default:
 - **Manajer Gudang** → `manager@example.com` / `password`
 - **Staff Gudang** → `staff@example.com` / `password`
 
-### 6️⃣ Jalankan Aplikasi
+### 6️⃣ Install PhpSpreadsheet
+Stockify menggunakan PhpSpreadsheet untuk ekspor laporan ke Excel. Install dengan perintah berikut:
+```bash
+composer require phpoffice/phpspreadsheet
+```
+
+### 7️⃣ Jalankan Aplikasi
 ```bash
 php artisan serve
 ```
