@@ -76,9 +76,9 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 Seeder akan membuat user default:
-- **Admin** → `admin@example.com` / `password`
-- **Manajer Gudang** → `manager@example.com` / `password`
-- **Staff Gudang** → `staff@example.com` / `password`
+- **Admin** → `admin@example.com` / `password123`
+- **Manajer Gudang** → `manager@example.com` / `password123`
+- **Staff Gudang** → `staff@example.com` / `password123`
 
 ### 6️⃣ Install PhpSpreadsheet
 Stockify menggunakan PhpSpreadsheet untuk ekspor laporan ke Excel. Install dengan perintah berikut:
