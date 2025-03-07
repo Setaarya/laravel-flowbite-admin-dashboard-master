@@ -24,12 +24,6 @@ class ProductController extends Controller
         $this->productAttributeService = $productAttributeService;
     }
 
-    public function index()
-    {
-        $products = $this->productService->getAllProducts();
-        return view('products.index', compact('products'));
-    }
-
     public function create()
     {
         $categories = Category::all();

@@ -32,29 +32,6 @@ use App\Http\Controllers\SettingController;
 */
 Route::get('/', [LandingPageController::class, 'index'])->name('index');
 
-
-/////////////////////////////////////////////
-// Resource routes for users
-Route::resource('users', UserController::class);
-
-// Resource routes for suppliers
-Route::resource('suppliers', SupplierController::class);
-
-// Resource routes for products
-Route::resource('products', ProductController::class);
-
-// Resource routes for categories
-Route::resource('categories', CategoryController::class);
-
-// Resource routes for product attributes
-Route::resource('product_attributes', ProductAttributeController::class);
-
-// Resource routes for stock transactions
-Route::resource('stock_transactions', StockTransactionController::class);
-
-/////////////////////////////////////////////////////////////
-
-
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('loginform');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -66,7 +43,6 @@ Route::get('/password/reset/{token}', [AuthController::class, 'showResetForm'])-
 Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 ////////////////////////////////////////////////////////////////////////
-
 
 
 Route::middleware(['auth'])->group(function () {
@@ -109,11 +85,11 @@ Route::middleware(['auth'])->group(function () {
         
         Route::get('/admin/users/index', [UserController::class, 'adminindex'])->name('admin.users.index');
         Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
-        Route::get('/admin/users', [UserController::class, 'show'])->name('admin.users.show');
-        Route::get('/admin/users/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
+        Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
-        Route::put('/admin/users', [UserController::class, 'update'])->name('admin.users.update');
-        Route::delete('/', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
         Route::get('/admin/reports/index', [ReportController::class, 'index'])->name('admin.reports.index');
         Route::get('/admin/reports/stock_transaction', [ReportController::class, 'stockindex'])->name('admin.reports.stock_report');

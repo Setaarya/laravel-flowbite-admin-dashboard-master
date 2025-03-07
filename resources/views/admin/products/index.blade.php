@@ -79,15 +79,15 @@
                     <td class="px-4 py-2 border">{{ $product->current_stock }}</td>
                     <td class="py-3 px-4 border">{{ $product->minimum_stock }}</td>
                     <td class="py-3 px-4 border flex space-x-2">
-                        <a href="{{ route('products.show', $product->id) }}"
+                        <a href="{{ route('admin.products.show', $product->id) }}"
                             class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
                             Show
                         </a>
-                        <a href="{{ route('products.edit', $product->id) }}"
+                        <a href="{{ route('admin.products.edit', $product->id) }}"
                             class="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
                             Edit
                         </a>
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
                             @csrf
                             @method('DELETE')

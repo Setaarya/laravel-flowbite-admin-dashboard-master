@@ -16,12 +16,6 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index()
-    {
-        $categories = $this->categoryService->getAllCategories();
-        return view('categories.index', compact('categories'));
-    }
-
     public function create()
     {
         return view('admin.categories.create');

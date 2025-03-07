@@ -24,6 +24,11 @@
                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">
             </div>
             <div>
+                <label class="block text-gray-700">Confirm Password:</label>
+                <input type="password" name="password_confirmation" required
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">
+            </div>
+            <div>
                 <label class="block text-gray-700">Role:</label>
                 <select name="role" required 
                     class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">

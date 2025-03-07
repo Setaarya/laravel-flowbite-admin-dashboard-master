@@ -1,3 +1,6 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('manager.navbar')
 
 @section('title', 'Detail Produk')
@@ -9,10 +12,10 @@
 
         <!-- Gambar Produk -->
         <div class="flex justify-center mb-4">
-            @if (!empty($product->image) && file_exists(public_path('storage/products/' . $product->image)))
-                <img src="{{ asset('storage/products/' . $product->image) }}" alt="Product Image" class="w-64 h-64 object-cover rounded-lg">
+            @if ($product->image)
+                <img src="{{ Storage::url($product->image) }}" alt="Product Image" class="max-w-lg w-full rounded-lg shadow-lg border border-gray-300">
             @else
-                <img src="{{ asset('images/default-product.png') }}" alt="Default Image" class="w-64 h-64 object-cover rounded-lg">
+                <p class="text-gray-500">No Image Available</p>
             @endif
         </div>
 

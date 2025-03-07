@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
 @extends('manager.navbar')
 
 @section('title', 'Daftar Produk')
@@ -35,10 +39,10 @@
                     <td class="py-3 px-4 border">{{ str()->limit($product->description, 50) }}</td>
                     <td class="py-3 px-4 border">Rp {{ number_format($product->purchase_price, 2, ',', '.') }}</td>
                     <td class="py-3 px-4 border">Rp {{ number_format($product->selling_price, 2, ',', '.') }}</td>
-                    <td class="py-3 px-4 border text-center">
+                    <td class="px-4 py-2 border text-center">
                         @if ($product->image)
-                            <button onclick="showImage('{{ asset('storage/product/' . $product->image) }}')" 
-                                    class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
+                            <button onclick="showImage('{{ Storage::url($product->image) }}')" 
+                                    class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
                                 Lihat Gambar
                             </button>
                         @else

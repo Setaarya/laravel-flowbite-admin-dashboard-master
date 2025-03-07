@@ -23,11 +23,13 @@ class UserService
 
     public function createUser(array $data)
     {
+        $data['password'] = bcrypt($data['password']);
         return $this->userRepository->create($data);
     }
 
     public function updateUser(User $user, array $data)
     {
+        $data['password'] = bcrypt($data['password']);
         return $this->userRepository->update($user, $data);
     }
 

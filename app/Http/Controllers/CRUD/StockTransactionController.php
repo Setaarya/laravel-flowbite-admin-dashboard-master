@@ -24,18 +24,6 @@ class StockTransactionController extends Controller
         $this->stockTransactionService = $stockTransactionService;
     }
 
-    public function index()
-    {
-        $transactions = $this->stockTransactionService->getAllTransactions()->last()->get();
-        return view('stock_transactions.index', compact('transactions'));
-    }
-
-    public function destroy($id)
-    {
-        $this->stockTransactionService->deleteTransaction($id);
-        return redirect()->route('stock_transactions.index')->with('success', 'Transaksi stok dihapus.');
-    }
-
     public function create()
     {
         if (Auth::user()->role !== 'Manajer Gudang') {

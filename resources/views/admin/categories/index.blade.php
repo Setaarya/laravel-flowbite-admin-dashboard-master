@@ -7,7 +7,7 @@
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Daftar Kategori</h1>
 
     <!-- Tombol Tambah Kategori -->
-    <a href="{{ route('categories.create') }}" 
+    <a href="{{ route('admin.categories.create') }}" 
         class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition">
         + Tambah Kategori
     </a>
@@ -35,19 +35,19 @@
                     <td class="px-4 py-3 border">{{ $category->updated_at->format('d M Y') }}</td>
                     <td class="px-4 py-3 border text-center flex justify-center space-x-2">
                         <!-- Tombol Lihat -->
-                        <a href="{{ route('categories.show', $category->id) }}" 
+                        <a href="{{ route('admin.categories.show', $category->id) }}" 
                             class="bg-blue-500 text-white px-3 py-2 rounded-md text-sm shadow-sm hover:bg-blue-700 transition">
                             Lihat
                         </a>
 
                         <!-- Tombol Edit -->
-                        <a href="{{ route('categories.edit', $category->id) }}" 
+                        <a href="{{ route('admin.categories.edit', $category->id) }}" 
                             class="bg-yellow-500 text-white px-3 py-2 rounded-md text-sm shadow-sm hover:bg-yellow-600 transition">
                             Edit
                         </a>
 
                         <!-- Tombol Hapus -->
-                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" 
+                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" 
                               onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">
                             @csrf
                             @method('DELETE')

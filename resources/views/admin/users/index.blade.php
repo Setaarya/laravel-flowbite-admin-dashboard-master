@@ -8,7 +8,7 @@
 
     <!-- Tombol Tambah Pengguna -->
     <div class="flex justify-between mb-6">
-        <a href="{{ route('users.create') }}" 
+        <a href="{{ route('admin.users.create') }}" 
             class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition">
             + Tambah Pengguna
         </a>
@@ -35,19 +35,19 @@
                     <td class="px-4 py-3 border">{{ $user->role }}</td>
                     <td class="px-4 py-3 border text-center flex justify-center space-x-2">
                         <!-- Tombol Show -->
-                        <a href="{{ route('users.show', $user->id) }}" 
+                        <a href="{{ route('admin.users.show', $user->id) }}" 
                             class="bg-blue-500 text-white px-3 py-2 rounded-md text-sm shadow-sm hover:bg-blue-700 transition">
                             Lihat
                         </a>
 
                         <!-- Tombol Edit -->
-                        <a href="{{ route('users.edit', $user->id) }}" 
+                        <a href="{{ route('admin.users.edit', $user->id) }}" 
                             class="bg-yellow-500 text-white px-3 py-2 rounded-md text-sm shadow-sm hover:bg-yellow-600 transition">
                             Edit
                         </a>
 
                         <!-- Tombol Delete -->
-                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" 
+                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" 
                               onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?');">
                             @csrf
                             @method('DELETE')
