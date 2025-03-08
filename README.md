@@ -48,8 +48,8 @@ Stockify adalah aplikasi web untuk mengelola stok barang secara efisien, meningk
 
 ### 1️⃣ Clone Repository
 ```bash
-git clone https://github.com/Setaarya/stockify.git
-cd stockify
+git clone https://github.com/Setaarya/inventory.git
+cd inventory
 ```
 
 ### 2️⃣ Install Dependency
