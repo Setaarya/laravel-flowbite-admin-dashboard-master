@@ -16,14 +16,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-mkdir -p storage/app/public/logo
-touch storage/app/public/logo/.gitignore
-echo "*" > storage/app/public/logo/.gitignore
-echo "!.gitignore" >> storage/app/public/logo/.gitignore
-mkdir -p storage/app/public/products
-touch storage/app/public/products/.gitignore
-echo "*" > storage/app/public/products/.gitignore
-echo "!.gitignore" >> storage/app/public/products/.gitignore
+
+# Abaikan semua isi storage kecuali folder logo dan products
 /storage/*
 !/storage/app/public/logo/
 !/storage/app/public/products/
