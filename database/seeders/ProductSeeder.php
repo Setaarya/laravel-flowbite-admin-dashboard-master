@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use App\Models\Product;
 
 class ProductSeeder extends Seeder
 {
@@ -26,7 +27,7 @@ class ProductSeeder extends Seeder
         }
 
         foreach (range(1, 20) as $index) {
-            DB::table('products')->insert([
+            Product::create([
                 'category_id'    => $faker->randomElement($categoryIds),
                 'supplier_id'    => $faker->randomElement($supplierIds),
                 'name'           => $faker->word . ' ' . $faker->randomElement(['A', 'B', 'C']),
@@ -41,5 +42,7 @@ class ProductSeeder extends Seeder
                 'updated_at'     => now(),
             ]);
         }
+
+        Product::all()->each->save();
     }
 }

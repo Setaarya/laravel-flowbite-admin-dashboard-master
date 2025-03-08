@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Faker\Factory as Faker;
 
 
+
 class StockTransactionSeeder extends Seeder
 {
     /**
@@ -29,7 +30,7 @@ class StockTransactionSeeder extends Seeder
         }
 
         foreach (range(1, 10) as $index) {
-            DB::table('stock_transactions')->insert([
+            StockTransaction::create([
                 'product_id' => $faker->randomElement($productIds),
                 'user_id'    => $faker->randomElement($userIds),
                 'type'       => $faker->randomElement(['masuk', 'keluar']),
@@ -41,5 +42,6 @@ class StockTransactionSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ]);
         }
+        StockTransaction::all()->each->save();
     }
 }

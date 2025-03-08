@@ -111,13 +111,12 @@ class StockOpnameService implements StockOpnameServiceInterface
             $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 
-        // Generate Excel File
-        $fileName = 'StockOpname_Admin_' . now()->format('YmdHis') . '.xlsx';
-        $filePath = storage_path('app/public/' . $fileName);
+        $fileName = 'laporan_stok.xlsx';
+        $tempFile = tempnam(sys_get_temp_dir(), 'temp_') . '.xlsx'; // Pastikan ekstensi .xlsx
 
         $writer = new Xlsx($spreadsheet);
-        $writer->save($filePath);
+        $writer->save($tempFile);
 
-        return response()->download($filePath)->deleteFileAfterSend(true);
+        return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
     }
 }

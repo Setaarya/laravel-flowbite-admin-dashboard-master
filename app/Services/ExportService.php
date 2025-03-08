@@ -47,13 +47,14 @@ class ExportService
             $row++;
         }
 
+
         $fileName = 'laporan_transaksi.xlsx';
-        $filePath = storage_path("app/public/{$fileName}");
+        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
 
         $writer = new Xlsx($spreadsheet);
-        $writer->save($filePath);
+        $writer->save($tempFile);
 
-        return response()->download($filePath, $fileName);
+        return response()->download($tempFile, $fileName);
     }
 
     public function stockexport($filters)
@@ -86,12 +87,12 @@ class ExportService
         }
 
         $fileName = 'laporan_stok.xlsx';
-        $filePath = storage_path("app/public/{$fileName}");
+        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
 
         $writer = new Xlsx($spreadsheet);
-        $writer->save($filePath);
+        $writer->save($tempFile);
 
-        return response()->download($filePath, $fileName);
+        return response()->download($tempFile, $fileName);
     }
 }
 ?>

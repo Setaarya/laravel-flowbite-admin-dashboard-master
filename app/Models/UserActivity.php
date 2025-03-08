@@ -8,6 +8,8 @@ class UserActivity extends Model
 {
     use HasFactory;
 
+    protected $table = 'user_activities';
+
     protected $fillable = ['user_id', 'activity'];
 
     public function user()

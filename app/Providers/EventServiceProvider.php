@@ -17,6 +17,8 @@ use App\Models\Setting;
 use App\Models\StockOpname;
 use App\Models\Supplier;
 use App\Observers\UserActivityObserver;
+use App\Observers\StockTransactionObserver;
+use App\Observers\ProductObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -61,6 +63,8 @@ class EventServiceProvider extends ServiceProvider
         Supplier::observe(UserActivityObserver::class);
         Setting::observe(UserActivityObserver::class);
         StockOpname::observe(UserActivityObserver::class);
+        StockTransaction::observe(StockTransactionObserver::class);
+        Product::observe(ProductObserver::class);
     }
     /**
      * Determine if events and listeners should be automatically discovered.
