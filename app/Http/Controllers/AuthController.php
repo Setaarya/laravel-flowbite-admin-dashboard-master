@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User; // Ensure this line is correct
+use App\Services\UserService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +11,13 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function showLoginForm()
     {
         return view('auth.login');
@@ -36,7 +43,7 @@ class AuthController extends Controller
                 return redirect()->route('manager_home');
             }
 
-            return redirect()->route('home');
+            return redirect()->route('index');
         }
 
         return back()->withErrors([
@@ -60,23 +67,11 @@ class AuthController extends Controller
             return redirect()->route('staff_home');
         }
     }
-    
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:Admin,Staff Gudang,Manajer Gudang',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => $request->role,
-        ]);
+        $data = $this->userService->validateUserData($request);
+        $user = $this->userService->createUser($data);
 
         Auth::login($user);
 
