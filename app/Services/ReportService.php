@@ -23,3 +23,4 @@ class ReportService
         return $this->repository->getFilteredProducts($filters);
     }
 }
+

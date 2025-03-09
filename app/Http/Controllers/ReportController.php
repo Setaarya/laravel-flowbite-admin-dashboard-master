@@ -8,7 +8,7 @@ use App\Services\ExportService;
 use App\Services\CategoryService;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 
 class ReportController extends Controller
 {
@@ -41,6 +41,16 @@ class ReportController extends Controller
 
     public function stockindex(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'nullable|exists:categories,id',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $categories = $this->categoryService->getAllCategories();
         $categoryId = $request->input('category_id');
         $startDate = $request->input('start_date');
@@ -53,14 +63,19 @@ class ReportController extends Controller
 
     public function transactionindex(Request $request)
     {
-        $filters = [
-            'category_id' => $request->input('category_id'),
-            'supplier_id' => $request->input('supplier_id'),
-            'stock_order' => $request->input('stock_order'),
-            'price_order' => $request->input('price_order'),
-            'transaction_order' => $request->input('transaction_order'),
-        ];
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'nullable|exists:categories,id',
+            'supplier_id' => 'nullable|exists:suppliers,id',
+            'stock_order' => 'nullable|in:asc,desc',
+            'price_order' => 'nullable|in:asc,desc',
+            'transaction_order' => 'nullable|in:asc,desc',
+        ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $filters = $request->only(['category_id', 'supplier_id', 'stock_order', 'price_order', 'transaction_order']);
         $products = $this->service->getReportData($filters);
         $categories = $this->categoryService->getAllCategories();
         $suppliers = $this->supplierService->getAllSuppliers();
@@ -68,21 +83,28 @@ class ReportController extends Controller
         return view('admin.reports.transaction_report', compact('products', 'categories', 'suppliers', 'filters'));
     }
 
-    // Endpoint untuk mengekspor laporan transaksi
     public function exportTransactionReport(Request $request)
     {
         return $this->exportService->transactionexport($request->all());
     }
 
-    // Endpoint untuk mengekspor laporan stok
     public function exportStockReport(Request $request)
     {
         return $this->exportService->stockexport($request->all());
     }
 
-
     public function managerstockindex(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'nullable|exists:categories,id',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $categories = $this->categoryService->getAllCategories();
         $categoryId = $request->input('category_id');
         $startDate = $request->input('start_date');
@@ -95,19 +117,23 @@ class ReportController extends Controller
 
     public function managertransactionindex(Request $request)
     {
-        $filters = [
-            'category_id' => $request->input('category_id'),
-            'supplier_id' => $request->input('supplier_id'),
-            'stock_order' => $request->input('stock_order'),
-            'price_order' => $request->input('price_order'),
-            'transaction_order' => $request->input('transaction_order'),
-        ];
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'nullable|exists:categories,id',
+            'supplier_id' => 'nullable|exists:suppliers,id',
+            'stock_order' => 'nullable|in:asc,desc',
+            'price_order' => 'nullable|in:asc,desc',
+            'transaction_order' => 'nullable|in:asc,desc',
+        ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $filters = $request->only(['category_id', 'supplier_id', 'stock_order', 'price_order', 'transaction_order']);
         $products = $this->service->getReportData($filters);
         $categories = $this->categoryService->getAllCategories();
         $suppliers = $this->supplierService->getAllSuppliers();
 
         return view('manager.reports.transaction_report', compact('products', 'categories', 'suppliers', 'filters'));
     }
-
 }
