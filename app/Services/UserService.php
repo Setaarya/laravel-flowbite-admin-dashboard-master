@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -21,21 +19,28 @@ class UserService
         return $this->userRepository->getAll();
     }
 
+    public function getUserById($id)
+    {
+        return $this->userRepository->getById($id);
+    }
+
     public function createUser(array $data)
     {
         $data['password'] = bcrypt($data['password']);
         return $this->userRepository->create($data);
     }
 
-    public function updateUser(User $user, array $data)
+    public function updateUser($id, array $data)
     {
-        $data['password'] = bcrypt($data['password']);
-        return $this->userRepository->update($user, $data);
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+        return $this->userRepository->update($id, $data);
     }
 
-    public function deleteUser(User $user)
+    public function deleteUser($id)
     {
-        return $this->userRepository->delete($user);
+        return $this->userRepository->delete($id);
     }
 
     public function validateUserData(Request $request, $id = null)
@@ -47,21 +52,6 @@ class UserService
             'role' => 'required|in:Admin,Staff Gudang,Manager Gudang',
         ]);
     }
-
-    public function updateSetting($id, $data)
-    {
-        $validatedData = validator($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|min:8|confirmed',
-        ])->validate();
-
-        if (!empty($validatedData['password'])) {
-            $validatedData['password'] = Hash::make($validatedData['password']);
-        } else {
-            unset($validatedData['password']);
-        }
-
-        return $this->userRepository->update($id, $validatedData);
-    }
 }
+
+

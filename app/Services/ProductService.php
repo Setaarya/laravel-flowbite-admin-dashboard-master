@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Models\Product;
 
 class ProductService
 {
@@ -13,6 +12,16 @@ class ProductService
     public function __construct(ProductRepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;
+    }
+
+    public function getAllProductsWithRelations()
+    {
+        return $this->productRepository->getAllWithRelations();
+    }
+
+    public function getProductById($id)
+    {
+        return $this->productRepository->getById($id);
     }
 
     public function getAllProducts()
@@ -28,14 +37,14 @@ class ProductService
         return $this->productRepository->create($data);
     }
 
-    public function updateProduct(Product $product, array $data)
+    public function updateProduct($id, array $data)
     {
-        return $this->productRepository->update($product, $data);
+        return $this->productRepository->update($id, $data);
     }
 
-    public function deleteProduct(Product $product)
+    public function deleteProduct($id)
     {
-        return $this->productRepository->delete($product);
+        return $this->productRepository->delete($id);
     }
 
     public function validateProductData(Request $request)
@@ -48,8 +57,8 @@ class ProductService
             'description'    => 'nullable|string',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price'  => 'required|numeric|min:0',
-            'image'          => 'nullable|image|mimes:jpg,png,jpeg|max:2048', 
-            'current_stock'  => 'nullable|integer|min:0',  // Ditambahkan agar sesuai database
+            'image'          => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'current_stock'  => 'nullable|integer|min:0',
             'minimum_stock'  => 'required|integer|min:0',
         ]);
     }

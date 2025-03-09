@@ -4,7 +4,6 @@ namespace App\Services;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Illuminate\Support\Facades\Storage;
 use App\Repositories\ReportRepository;
 
 class ExportService
@@ -95,4 +94,5 @@ class ExportService
         return response()->download($tempFile, $fileName);
     }
 }
+
 ?>

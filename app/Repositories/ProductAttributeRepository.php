@@ -21,13 +21,15 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
         return ProductAttribute::create($data);
     }
 
-    public function update(ProductAttribute $productAttribute, array $data)
+    public function update($id, array $data)
     {
+        $productAttribute = ProductAttribute::findOrfail($id);
         return $productAttribute->update($data);
     }
 
-    public function delete(ProductAttribute $productAttribute)
+    public function delete($id)
     {
+        $productAttribute = ProductAttribute::findOrfail($id);
         return $productAttribute->delete();
     }
 }

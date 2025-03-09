@@ -2,19 +2,24 @@
 
 namespace App\Services;
 
-use App\Models\Setting;
+use App\Repositories\SettingRepository;
 
 class SettingService
 {
+    protected $settingRepository;
+
+    public function __construct(SettingRepository $settingRepository)
+    {
+        $this->settingRepository = $settingRepository;
+    }
+
     public function getSettings()
     {
-        return Setting::first() ?? new Setting(); 
+        return $this->settingRepository->getSettings();
     }
 
     public function updateSettings(array $data)
     {
-        $settings = Setting::firstOrCreate([]);
-
         // Cek apakah ada gambar yang diupload
         if (isset($data['app_logo']) && $data['app_logo'] instanceof \Illuminate\Http\UploadedFile) {
             // Simpan file ke storage/app/public/logo
@@ -22,8 +27,8 @@ class SettingService
             $data['app_logo'] = $path; // Simpan path ke database
         }
 
-        $settings->update($data);
-
-        return $settings;
+        return $this->settingRepository->updateSettings($data);
     }
 }
+
+

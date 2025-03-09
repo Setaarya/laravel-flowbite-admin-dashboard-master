@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\StaffDashboardRepositoryInterface;
 
-class StaffDashboardService implements StaffDashboardServiceInterface
+class StaffDashboardService
 {
     protected $repository;
 

@@ -9,6 +9,6 @@ interface ProductAttributeRepositoryInterface
     public function getAll();
     public function getById($id);
     public function create(array $data);
-    public function update(ProductAttribute $productAttribute, array $data);
-    public function delete(ProductAttribute $productAttribute);
+    public function update($id, array $data);
+    public function delete($id);
 }

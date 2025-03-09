@@ -8,7 +8,7 @@ class SettingRepository
 {
     public function getSettings()
     {
-        return Setting::first();
+        return Setting::first() ?? new Setting();
     }
 
     public function updateSettings(array $data)

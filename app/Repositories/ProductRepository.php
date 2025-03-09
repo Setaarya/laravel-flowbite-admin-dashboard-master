@@ -19,7 +19,6 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function create(array $data)
     {
-        // Jika ada gambar, simpan ke storage
         if (isset($data['image'])) {
             $data['image'] = $this->uploadImage($data['image']);
         }
@@ -27,9 +26,10 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::create($data);
     }
 
-
-    public function update(Product $product, array $data)
+    public function update($id, array $data)
     {
+        $product = Product::findOrFail($id);
+
         if (isset($data['image'])) {
             $newImagePath = $this->uploadImage($data['image']);
 
@@ -42,30 +42,21 @@ class ProductRepository implements ProductRepositoryInterface
         return $product->update($data);
     }
 
-    /**
-     * Hapus produk
-     */
-    public function delete(Product $product)
+    public function delete($id)
     {
-        // Hapus gambar produk jika ada sebelum menghapus produk
+        $product = Product::findOrFail($id);
         $this->deleteImage($product->image);
-        
+
         return $product->delete();
     }
 
-    /**
-     * Upload gambar produk ke storage
-     */
     private function uploadImage($image)
     {
-        Storage::disk('public')->makeDirectory('products'); // Pastikan folder ada
+        Storage::disk('public')->makeDirectory('products');
         $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
         return $image->storeAs('products', $filename, 'public');
     }
 
-    /**
-     * Hapus gambar dari storage jika ada
-     */
     private function deleteImage($imagePath)
     {
         if (!empty($imagePath) && Storage::disk('public')->exists($imagePath)) {
@@ -73,4 +64,8 @@ class ProductRepository implements ProductRepositoryInterface
         }
     }
 
+    public function getAllWithRelations()
+    {
+        return Product::with(['category', 'supplier'])->get();
+    }
 }

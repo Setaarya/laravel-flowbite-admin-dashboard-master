@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\StockOpname;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
 
 class StockOpnameRepository implements StockOpnameRepositoryInterface
 {

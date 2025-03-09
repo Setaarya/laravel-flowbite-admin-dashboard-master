@@ -3,31 +3,40 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
+
 use App\Services\ProductService;
 use App\Services\ProductAttributeService;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Supplier;
+use App\Services\CategoryService;
+use App\Services\SupplierService;
+
+
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
     protected $productService;
     protected $productAttributeService;
+    protected $categoryService;
+    protected $supplierService;
 
-    public function __construct(ProductService $productService, ProductAttributeService $productAttributeService)
-    {
+    public function __construct(
+        ProductService $productService,
+        ProductAttributeService $productAttributeService,
+        CategoryService $categoryService,
+        SupplierService $supplierService
+    ) {
         $this->productService = $productService;
         $this->productAttributeService = $productAttributeService;
+        $this->categoryService = $categoryService;
+        $this->supplierService = $supplierService;
     }
 
     public function create()
     {
-        $categories = Category::all();
-        $suppliers = Supplier::all();
+        $categories = $this->categoryService->getAllCategories();
+        $suppliers = $this->supplierService->getAllSuppliers();
         return view('admin.products.create', compact('categories', 'suppliers'));
     }
 
@@ -39,31 +48,33 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
-    public function show(Product $product)
+    public function show($productId)
     {
-        $attributes = $this->productAttributeService->getAllProductAttributes()->where('product_id', $product->id);
-        
+        $product = $this->productService->getProductById($productId);
+        $attributes = $this->productAttributeService->getAllProductAttributes()->where('product_id', $productId);
+
         return view('admin.products.show', compact('product', 'attributes'));
     }
 
-    public function edit(Product $product)
+    public function edit($productId)
     {
-        $categories = Category::all();
-        $suppliers = Supplier::all();
+        $product = $this->productService->getProductById($productId);
+        $categories = $this->categoryService->getAllCategories();
+        $suppliers = $this->supplierService->getAllSuppliers();
         return view('admin.products.edit', compact('product', 'categories', 'suppliers'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $productId)
     {
         $validatedData = $this->productService->validateProductData($request);
-        $this->productService->updateProduct($product, $validatedData);
+        $this->productService->updateProduct($productId, $validatedData);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
-    public function destroy(Product $product)
+    public function destroy($productId)
     {
-        $this->productService->deleteProduct($product);
+        $this->productService->deleteProduct($productId);
 
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
@@ -75,12 +86,13 @@ class ProductController extends Controller
     }
 
     // Menampilkan detail produk untuk manajer
-    public function managerShow(Product $product)
+    public function managerShow($productId)
     {
-        $attributes = $this->productAttributeService->getAllProductAttributes()->where('product_id', $product->id);
-        
+        $product = $this->productService->getProductById($productId);
+        $attributes = $this->productAttributeService->getAllProductAttributes()->where('product_id', $productId);
+
         return view('manager.products.show', compact('product', 'attributes'));
-        
+
     }
 
     public function adminIndex()
@@ -92,7 +104,7 @@ class ProductController extends Controller
     public function export()
     {
         // Ambil data dari database
-        $products = Product::with(['category', 'supplier'])->get();
+        $products = $this->productService->getAllProductsWithRelations();
 
         // Buat Spreadsheet baru
         $spreadsheet = new Spreadsheet();
@@ -100,7 +112,7 @@ class ProductController extends Controller
 
         // Header untuk file Excel
         $headers = [
-            'ID', 'Kategori', 'Supplier', 'Nama Produk', 'SKU', 'Deskripsi', 
+            'ID', 'Kategori', 'Supplier', 'Nama Produk', 'SKU', 'Deskripsi',
             'Harga Beli', 'Harga Jual', 'Gambar', 'Stok Saat Ini', 'Stok Minimum', 'Dibuat Pada'
         ];
 

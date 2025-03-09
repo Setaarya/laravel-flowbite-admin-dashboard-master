@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\AdminDashboardRepositoryInterface;
 
-class AdminDashboardService implements AdminDashboardServiceInterface
+class AdminDashboardService
 {
     protected $repository;
 

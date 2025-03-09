@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\AdminDashboardServiceInterface;
+use App\Services\AdminDashboardService;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     protected $dashboardService;
 
-    public function __construct(AdminDashboardServiceInterface $dashboardService)
+    public function __construct(AdminDashboardService $dashboardService)
     {
         $this->dashboardService = $dashboardService;
     }

@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\StockOpnameServiceInterface;
+use App\Services\StockOpnameService;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Illuminate\Http\Response;
 
 class StockOpnameController extends Controller
 {
     protected $stockOpnameService;
 
-    public function __construct(StockOpnameServiceInterface $stockOpnameService)
+    public function __construct(StockOpnameService $stockOpnameService)
     {
         $this->stockOpnameService = $stockOpnameService;
     }
@@ -105,7 +104,7 @@ class StockOpnameController extends Controller
 
         return response()->json(['message' => 'Stock Opname berhasil disimpan!']);
     }
-    
+
 
     public function showLatestStockOpname()
     {

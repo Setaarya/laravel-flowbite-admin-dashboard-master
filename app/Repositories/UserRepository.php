@@ -22,21 +22,19 @@ class UserRepository implements UserRepositoryInterface
         return User::create($data);
     }
 
-    public function update(User $user, array $data)
+    public function update($id, array $data)
     {
-        return $user->update($data);
+        return User::where('id', $id)->update($data);
     }
 
-    public function updateSetting($id, $data)
+    public function updateSetting($id, array $data)
     {
-        $user = User::findOrFail($id);
-        $user->update($data);
-        return $user;
+        return User::where('id', $id)->update($data);
     }
 
-    public function delete(User $user)
+    public function delete($id)
     {
-        return $user->delete();
+        return User::where('id', $id)->delete();
     }
 
     public function findByEmail(string $email)

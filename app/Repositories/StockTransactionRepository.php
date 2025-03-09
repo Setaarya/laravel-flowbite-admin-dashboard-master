@@ -3,9 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\StockTransaction;
-use Illuminate\Support\Facades\DB;
-
-
 
 class StockTransactionRepository implements StockTransactionRepositoryInterface
 {
@@ -29,14 +26,14 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
         return StockTransaction::create($data);
     }
 
-    public function update(StockTransaction $stockTransaction, array $data)
+    public function update($id, array $data)
     {
-        return $stockTransaction->update($data);
+        return StockTransaction::where('id', $id)->update($data);
     }
 
-    public function delete(StockTransaction $stockTransaction)
+    public function delete($id)
     {
-        return $stockTransaction->delete();
+        return StockTransaction::where('id', $id)->delete();
     }
 
     public function getPending()
@@ -48,5 +45,10 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
     {
         return StockTransaction::where('id', $id)->update(['status' => $status]);
     }
-    
+
+    public function getByIdWithRelations($id)
+    {
+        return StockTransaction::with(['product', 'user'])->findOrFail($id);
+    }
+
 }

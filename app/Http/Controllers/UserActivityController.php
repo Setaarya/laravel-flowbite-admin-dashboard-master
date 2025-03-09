@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\UserActivityService;
-use Illuminate\Http\Request;
 
 class UserActivityController extends Controller
 {
@@ -19,4 +18,5 @@ class UserActivityController extends Controller
         return view('admin.reports.user_activity', compact('activities'));
     }
 }
+
 ?>

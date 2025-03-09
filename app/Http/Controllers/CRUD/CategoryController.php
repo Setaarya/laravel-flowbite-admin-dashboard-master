@@ -4,7 +4,6 @@ namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
 use App\Services\CategoryService;
-use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -29,28 +28,28 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
-    public function show(Category $category)
+    public function show($id)
     {
+        $category = $this->categoryService->getCategoryById($id);
         return view('admin.categories.show', compact('category'));
     }
 
-    public function edit(Category $category)
+    public function edit($id)
     {
+        $category = $this->categoryService->getCategoryById($id);
         return view('admin.categories.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
         $validatedData = $this->categoryService->validateCategoryData($request);
-        $this->categoryService->updateCategory($category, $validatedData);
-
+        $this->categoryService->updateCategory($id, $validatedData);
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        $this->categoryService->deleteCategory($category);
-
+        $this->categoryService->deleteCategory($id);
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 

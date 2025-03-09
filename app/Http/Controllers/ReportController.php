@@ -5,26 +5,35 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\ReportService;
 use App\Services\ExportService;
-use App\Models\Category;
-use App\Models\Supplier;
+use App\Services\CategoryService;
+use App\Services\SupplierService;
 use Illuminate\Http\Request;
+
 
 class ReportController extends Controller
 {
     protected $exportService;
     protected $service;
+    protected $categoryService;
+    protected $supplierService;
 
-    public function __construct(ExportService $exportService, ReportService $service)
-    {
+    public function __construct(
+        ExportService $exportService,
+        ReportService $service,
+        CategoryService $categoryService,
+        SupplierService $supplierService
+    ) {
         $this->exportService = $exportService;
         $this->service = $service;
+        $this->categoryService = $categoryService;
+        $this->supplierService = $supplierService;
     }
 
     public function index()
     {
         return view('admin.reports.index');
     }
-    
+
     public function managerindex()
     {
         return view('manager.reports.index');
@@ -32,7 +41,7 @@ class ReportController extends Controller
 
     public function stockindex(Request $request)
     {
-        $categories = Category::all();
+        $categories = $this->categoryService->getAllCategories();
         $categoryId = $request->input('category_id');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
@@ -53,8 +62,8 @@ class ReportController extends Controller
         ];
 
         $products = $this->service->getReportData($filters);
-        $categories = Category::all();
-        $suppliers = Supplier::all();
+        $categories = $this->categoryService->getAllCategories();
+        $suppliers = $this->supplierService->getAllSuppliers();
 
         return view('admin.reports.transaction_report', compact('products', 'categories', 'suppliers', 'filters'));
     }
@@ -71,10 +80,10 @@ class ReportController extends Controller
         return $this->exportService->stockexport($request->all());
     }
 
-    
+
     public function managerstockindex(Request $request)
     {
-        $categories = Category::all();
+        $categories = $this->categoryService->getAllCategories();
         $categoryId = $request->input('category_id');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
@@ -95,8 +104,8 @@ class ReportController extends Controller
         ];
 
         $products = $this->service->getReportData($filters);
-        $categories = Category::all();
-        $suppliers = Supplier::all();
+        $categories = $this->categoryService->getAllCategories();
+        $suppliers = $this->supplierService->getAllSuppliers();
 
         return view('manager.reports.transaction_report', compact('products', 'categories', 'suppliers', 'filters'));
     }

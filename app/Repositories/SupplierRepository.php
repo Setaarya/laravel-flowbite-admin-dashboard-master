@@ -21,13 +21,13 @@ class SupplierRepository implements SupplierRepositoryInterface
         return Supplier::create($data);
     }
 
-    public function update(Supplier $supplier, array $data)
+    public function update($id, array $data)
     {
-        return $supplier->update($data);
+        return Supplier::where('id', $id)->update($data);
     }
 
-    public function delete(Supplier $supplier)
+    public function delete($id)
     {
-        return $supplier->delete();
+        return Supplier::where('id', $id)->delete();
     }
 }

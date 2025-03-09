@@ -4,7 +4,6 @@ namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -29,30 +28,32 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
-    public function show(User $user)
+    public function show($userId)
     {
+        $user = $this->userService->getUserById($userId);
         return view('admin.users.show', compact('user'));
     }
 
-    public function edit(User $user)
+    public function edit($userId)
     {
+        $user = $this->userService->getUserById($userId);
         return view('admin.users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $userId)
     {
-        $validatedData = $this->userService->validateUserData($request, $user->id);
+        $validatedData = $this->userService->validateUserData($request, $userId);
         if ($request->filled('password')) {
             $validatedData['password'] = bcrypt($request->password);
         }
-        $this->userService->updateUser($user, $validatedData);
+        $this->userService->updateUser($userId, $validatedData);
 
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
-    public function destroy(User $user)
+    public function destroy($userId)
     {
-        $this->userService->deleteUser($user);
+        $this->userService->deleteUser($userId);
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
     }

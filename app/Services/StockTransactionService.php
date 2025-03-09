@@ -3,89 +3,99 @@
 namespace App\Services;
 
 use App\Repositories\StockTransactionRepositoryInterface;
-use App\Models\StockTransaction;
-use App\Models\Product;
+use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Http\Request;
 
-class StockTransactionService implements StockTransactionServiceInterface
+class StockTransactionService
 {
-    protected $repository;
+    protected $stockTransactionRepository;
+    protected $productRepository;
 
-    public function __construct(StockTransactionRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        StockTransactionRepositoryInterface $stockTransactionRepository,
+        ProductRepositoryInterface $productRepository
+    ) {
+        $this->stockTransactionRepository = $stockTransactionRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function getAllTransactions()
     {
-        return $this->repository->getAll();
+        return $this->stockTransactionRepository->getAll();
     }
 
     public function getAllTransactionsSortedByDate()
     {
-        return $this->repository->getAllSortedByDate();
+        return $this->stockTransactionRepository->getAllSortedByDate();
     }
 
-    public function getTransactionById($id)
+    public function getTransactionById($transactionId)
     {
-        return $this->repository->getById($id);
+        return $this->stockTransactionRepository->getById($transactionId);
+    }
+
+    public function getTransactionWithRelations($id)
+    {
+        return $this->stockTransactionRepository->getByIdWithRelations($id);
     }
 
     public function createTransaction(array $data)
     {
-        return $this->repository->create($data);
+        return $this->stockTransactionRepository->create($data);
     }
 
-    public function updateTransaction(StockTransaction $stockTransaction, array $data)
+    public function updateTransaction($transactionId, array $data)
     {
-        return $this->repository->update($stockTransaction, $data);
+        return $this->stockTransactionRepository->update($transactionId, $data);
     }
 
-    public function deleteTransaction(StockTransaction $stockTransaction)
+    public function deleteTransaction($transactionId)
     {
-        return $this->repository->delete($stockTransaction);
+        return $this->stockTransactionRepository->delete($transactionId);
     }
 
     public function getPendingTransactions()
     {
-        return StockTransaction::where('status', 'pending')->get();
+        return $this->stockTransactionRepository->getPending();
     }
 
-    public function confirmTransaction($id, $status)
+    public function confirmTransaction($transactionId, $status)
     {
-        $transaction = StockTransaction::findOrFail($id);
-        $product = Product::findOrFail($transaction->product_id);
+        $transaction = $this->stockTransactionRepository->getById($transactionId);
+        $product = $this->productRepository->getById($transaction->product_id);
 
-        // Hanya proses perubahan stok jika status menjadi 'received' atau 'dispatched'
         if ($status === 'received' && $transaction->type === 'masuk') {
-            $product->increment('current_stock', $transaction->quantity);
+            $this->productRepository->update($product->id, [
+                'current_stock' => $product->current_stock + $transaction->quantity
+            ]);
         } elseif ($status === 'dispatched' && $transaction->type === 'keluar') {
             if ($product->current_stock < $transaction->quantity) {
                 throw new \Exception("Stok tidak cukup untuk transaksi ini.");
             }
-            $product->decrement('current_stock', $transaction->quantity);
+            $this->productRepository->update($product->id, [
+                'current_stock' => $product->current_stock - $transaction->quantity
+            ]);
         }
 
-        // Update status transaksi
-        $transaction->update(['status' => $status]);
+        return $this->stockTransactionRepository->updateStatus($transactionId, $status);
     }
 
-    public function createStockTransaction($userId, $data)
+    public function createStockTransaction($userId, array $data)
     {
-        return StockTransaction::create([
+        return $this->stockTransactionRepository->create([
             'product_id' => $data['product_id'],
             'user_id' => $userId,
             'type' => $data['type'],
             'quantity' => $data['quantity'],
             'date' => $data['date'],
-            'status' => 'pending', // Status selalu 'pending' saat dibuat
+            'status' => 'pending',
             'notes' => $data['notes'] ?? null,
         ]);
     }
 
     public function validateStockTransactionData(Request $request)
     {
-        $request->validate([
+        return $request->validate([
             'product_id' => 'required|exists:products,id',
             'type' => 'required|in:masuk,keluar',
             'quantity' => 'required|integer|min:1',
@@ -94,4 +104,3 @@ class StockTransactionService implements StockTransactionServiceInterface
         ]);
     }
 }
-

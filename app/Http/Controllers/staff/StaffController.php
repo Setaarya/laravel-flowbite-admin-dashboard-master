@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\staff;
 
 use App\Http\Controllers\Controller;
-use App\Services\StaffDashboardServiceInterface;
+use App\Services\StaffDashboardService;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
     protected $dashboardService;
 
-    public function __construct(StaffDashboardServiceInterface $dashboardService)
+    public function __construct(StaffDashboardService $dashboardService)
     {
         $this->dashboardService = $dashboardService;
     }

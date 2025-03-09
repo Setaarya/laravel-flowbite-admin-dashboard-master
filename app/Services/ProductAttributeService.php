@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repositories\ProductAttributeRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Models\ProductAttribute;
 
 class ProductAttributeService
 {
@@ -20,20 +19,25 @@ class ProductAttributeService
         return $this->productAttributeRepository->getAll();
     }
 
+    public function getProductAttributesById($id)
+    {
+        return $this->productAttributeRepository->getById($id);
+    }
+
     public function createProductAttribute(array $data)
     {
-        
+
         return $this->productAttributeRepository->create($data);
     }
 
-    public function updateProductAttribute(ProductAttribute $productAttribute, array $data)
+    public function updateProductAttribute($id, array $data)
     {
-        return $this->productAttributeRepository->update($productAttribute, $data);
+        return $this->productAttributeRepository->update($id, $data);
     }
 
-    public function deleteProductAttribute(ProductAttribute $productAttribute)
+    public function deleteProductAttribute($id)
     {
-        return $this->productAttributeRepository->delete($productAttribute);
+        return $this->productAttributeRepository->delete($id);
     }
 
     public function validateProductAttributeData(Request $request)

@@ -3,25 +3,29 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
-use App\Models\StockTransaction;
-use App\Models\Product;
-use App\Models\User;
+
 use App\Services\StockTransactionService;
+use App\Services\ProductService;
+use App\Services\UserService;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
 class StockTransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $stockTransactionService;
+    protected $productService;
+    protected $userService;
 
-     protected $stockTransactionService;
-
-    public function __construct(StockTransactionService $stockTransactionService)
-    {
+    public function __construct(
+        StockTransactionService $stockTransactionService,
+        ProductService $productService,
+        UserService $userService
+    ) {
         $this->stockTransactionService = $stockTransactionService;
+        $this->productService = $productService;
+        $this->userService = $userService;
     }
 
     public function create()
@@ -30,8 +34,8 @@ class StockTransactionController extends Controller
             return redirect()->route('manager.stock_transactions.index')->with('error', 'Unauthorized.');
         }
 
-        $products = Product::all();
-        $users = User::all();
+        $products = $this->productService->getAllProducts();
+        $users = $this->userService->getAllUsers();
         return view('manager.stock_transactions.create', compact('products', 'users'));
     }
 
@@ -119,10 +123,11 @@ class StockTransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function managerShow(StockTransaction $stockTransaction)
+    public function managerShow($transactionId)
     {
         // Pastikan objek memiliki relasi yang diperlukan
-        $stockTransaction->load(['product', 'user']);
+        $stockTransaction = $this->stockTransactionService->getTransactionWithRelations($transactionId);
+
 
         return view('manager.stock_transactions.show', compact('stockTransaction'));
     }
@@ -132,16 +137,18 @@ class StockTransactionController extends Controller
      * Menampilkan form edit transaksi stok.
      * Hanya Manager yang bisa mengedit transaksi yang dibuatnya dan masih berstatus "pending".
      */
-    public function manageredit(StockTransaction $stockTransaction)
+    public function manageredit($transactionId)
     {
-        $products = Product::all(); // Ambil semua produk dari database
-        $users = User::all(); // Ambil semua pengguna dari database
-        return view('manager.stock_transactions.edit', compact('stockTransaction', 'products', 'users'));        
+        $stockTransaction = $this->stockTransactionService->getTransactionById($transactionId);
+        $products = $this->productService->getAllProducts();
+        $users = $this->userService->getAllUsers();
+        return view('manager.stock_transactions.edit', compact('stockTransaction', 'products', 'users'));
     }
 
-    public function managerupdate(Request $request, StockTransaction $stockTransaction)
+    public function managerupdate(Request $request, $transactionId)
     {
         $user = Auth::user();
+        $stockTransaction = $this->stockTransactionService->getTransactionById($transactionId);
 
         // Cek apakah user adalah manager dan hanya bisa update transaksi miliknya yang masih pending
         if ($user->role !== 'Manajer Gudang' || $stockTransaction->user_id !== $user->id || $stockTransaction->status !== 'pending') {

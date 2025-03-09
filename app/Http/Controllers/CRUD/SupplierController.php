@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\CRUD;
 
 use App\Http\Controllers\Controller;
+
 use App\Services\SupplierService;
-use App\Models\Supplier;
+
 use Illuminate\Http\Request;
 
 
@@ -15,50 +16,6 @@ class SupplierController extends Controller
     public function __construct(SupplierService $supplierService)
     {
         $this->supplierService = $supplierService;
-    }
-
-    public function index()
-    {
-        $suppliers = $this->supplierService->getAllSuppliers();
-        return view('admin.suppliers.index', compact('suppliers'));
-    }
-
-    public function create()
-    {
-        return view('admin.suppliers.create');
-    }
-
-    public function store(Request $request)
-    {
-        $validatedData = $this->supplierService->validateSupplierData($request);
-        $this->supplierService->createSupplier($validatedData);
-
-        return redirect()->route('admin.suppliers.index')->with('success', 'Supplier created successfully.');
-    }
-
-    public function show(Supplier $supplier)
-    {
-        return view('admin.suppliers.show', compact('supplier'));
-    }
-
-    public function edit(Supplier $supplier)
-    {
-        return view('admin.suppliers.edit', compact('supplier'));
-    }
-
-    public function update(Request $request, Supplier $supplier)
-    {
-        $validatedData = $this->supplierService->validateSupplierData($request);
-        $this->supplierService->updateSupplier($supplier, $validatedData);
-
-        return redirect()->route('admin.suppliers.index')->with('success', 'Supplier updated successfully.');
-    }
-
-    public function destroy(Supplier $supplier)
-    {
-        $this->supplierService->deleteSupplier($supplier);
-
-        return redirect()->route('admin.suppliers.index')->with('success', 'Supplier deleted successfully.');
     }
 
     public function managerIndex()
@@ -86,27 +43,29 @@ class SupplierController extends Controller
         return redirect()->route('admin.suppliers.index')->with('success', 'Supplier created successfully.');
     }
 
-    public function adminshow(Supplier $supplier)
+    public function adminshow($supplierId)
     {
+        $supplier = $this->supplierService->getSupplierById($supplierId);
         return view('admin.suppliers.show', compact('supplier'));
     }
 
-    public function adminedit(Supplier $supplier)
+    public function adminedit($supplierId)
     {
+        $supplier = $this->supplierService->getSupplierById($supplierId);
         return view('admin.suppliers.edit', compact('supplier'));
     }
 
-    public function adminupdate(Request $request, Supplier $supplier)
+    public function adminupdate(Request $request, $supplierId)
     {
         $validatedData = $this->supplierService->validateSupplierData($request);
-        $this->supplierService->updateSupplier($supplier, $validatedData);
+        $this->supplierService->updateSupplier($supplierId, $validatedData);
 
         return redirect()->route('admin.suppliers.index')->with('success', 'Supplier updated successfully.');
     }
 
-    public function admindestroy(Supplier $supplier)
+    public function admindestroy($supplierId)
     {
-        $this->supplierService->deleteSupplier($supplier);
+        $this->supplierService->deleteSupplier($supplierId);
 
         return redirect()->route('admin.suppliers.index')->with('success', 'Supplier deleted successfully.');
     }

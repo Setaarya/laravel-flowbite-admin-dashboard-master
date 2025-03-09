@@ -10,8 +10,9 @@ interface StockTransactionRepositoryInterface
     public function getById($id);
     public function getAllSortedByDate();
     public function create(array $data);
-    public function update(StockTransaction $stockTransaction, array $data);
-    public function delete(StockTransaction $stockTransaction);
+    public function update($id, array $data);
+    public function delete($id);
     public function getPending();
     public function updateStatus($id, $status);
+    public function getByIdWithRelations($id);
 }

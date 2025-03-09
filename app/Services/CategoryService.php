@@ -4,8 +4,7 @@ namespace App\Services;
 
 use App\Repositories\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Models\Category;
-use Illuminate\Validation\ValidationException;
+
 
 class CategoryService
 {
@@ -31,14 +30,14 @@ class CategoryService
         return $this->categoryRepository->create($data);
     }
 
-    public function updateCategory(Category $category, array $data)
+    public function updateCategory($id, array $data)
     {
-        return $this->categoryRepository->update($category, $data);
+        return $this->categoryRepository->update($id, $data);
     }
 
-    public function deleteCategory(Category $category)
+    public function deleteCategory($id)
     {
-        return $this->categoryRepository->delete($category);
+        return $this->categoryRepository->delete($id);
     }
 
     public function validateCategoryData(Request $request)

@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Repositories\SupplierRepositoryInterface;
 use Illuminate\Http\Request;
-use App\Models\Supplier;
-use Illuminate\Validation\Rule;
 
 class SupplierService
 {
@@ -23,7 +21,6 @@ class SupplierService
     {
         return $this->supplierRepository->getAll();
     }
-
 
     /**
      * Mendapatkan detail supplier berdasarkan ID.
@@ -44,17 +41,17 @@ class SupplierService
     /**
      * Memperbarui data supplier.
      */
-    public function updateSupplier(Supplier $supplier, array $data)
+    public function updateSupplier(int $supplierId, array $data)
     {
-        return $this->supplierRepository->update($supplier, $data);
+        return $this->supplierRepository->update($supplierId, $data);
     }
 
     /**
      * Menghapus supplier.
      */
-    public function deleteSupplier(Supplier $supplier)
+    public function deleteSupplier(int $supplierId)
     {
-        return $this->supplierRepository->delete($supplier);
+        return $this->supplierRepository->delete($supplierId);
     }
 
     /**
