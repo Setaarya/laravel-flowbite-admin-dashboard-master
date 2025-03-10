@@ -49,7 +49,7 @@ class UserService
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => $id ? 'nullable|string|min:8|confirmed' : 'required|string|min:8|confirmed',
-            'role' => 'required|in:Admin,Staff Gudang,Manager Gudang',
+            'role' => 'required|in:Admin,Staff Gudang,Manajer Gudang',
         ]);
     }
 }

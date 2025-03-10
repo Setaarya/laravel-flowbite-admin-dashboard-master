@@ -40,10 +40,10 @@ class CategoryService
         return $this->categoryRepository->delete($id);
     }
 
-    public function validateCategoryData(Request $request)
+    public function validateCategoryData(Request $request, $id = null)
     {
         return $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $request->id,
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
             'description' => 'nullable|string',
         ]);
     }

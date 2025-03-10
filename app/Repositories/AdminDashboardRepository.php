@@ -44,7 +44,7 @@ class AdminDashboardRepository implements AdminDashboardRepositoryInterface
 
     public function getLowStockCount(): int
     {
-        return Product::where('current_stock', '<=', 'minimun_stock')->count();
+        return Product::whereColumn('current_stock', '<=', 'minimum_stock')->count();
     }
 
     public function getLatestUserActivities(int $limit = 10)

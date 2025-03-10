@@ -49,6 +49,22 @@
             @error('quantity') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
         </div>
 
+        <!-- Date -->
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Tanggal:</label>
+            <input type="date" name="date" id="date" class="w-full p-2 border border-gray-300 rounded"
+                value="{{ old('date', $stockTransaction->date) }}" required>
+            @error('date') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        </div>
+
+        <!-- Notes -->
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Catatan:</label>
+            <textarea name="notes" id="notes" class="w-full p-2 border border-gray-300 rounded"
+                placeholder="Tambahkan catatan jika diperlukan">{{ old('notes', $stockTransaction->notes) }}</textarea>
+            @error('notes') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        </div>
+
         <!-- Submit Button -->
         <button type="submit" class="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700">
             Update Transaksi

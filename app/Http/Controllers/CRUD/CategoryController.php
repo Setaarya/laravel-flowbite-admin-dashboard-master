@@ -42,7 +42,7 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validatedData = $this->categoryService->validateCategoryData($request);
+        $validatedData = $this->categoryService->validateCategoryData($request, $id);
         $this->categoryService->updateCategory($id, $validatedData);
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
